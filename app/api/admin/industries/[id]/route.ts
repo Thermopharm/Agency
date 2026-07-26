@@ -1,19 +1,71 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { getAdminSession } from "@/lib/session";
+import { db } from "@/lib/db";
+import { getSession } from "@/lib/session";
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const industry = await db.industry.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
+    });
+
+    if (!industry) {
+      return NextResponse.json({ error: "Industry not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(industry);
+  } catch (error) {
+    console.error("Error fetching industry by ID:", error);
+    return NextResponse.json({ error: "Failed to fetch industry" }, { status: 500 });
+  }
+}
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getAdminSession();
+  const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
     const body = await req.json();
-    const { title, slug, shortDesc, fullDesc, image, icon, specs, standards, status } = body;
+    const {
+      title,
+      slug,
+      shortDesc,
+      fullDesc,
+      image,
+      imageAlt,
+      icon,
+      specs,
+      standards,
+      challenges,
+      solutions,
+      relatedServices,
+      relatedProjects,
+      relatedArticles,
+      metaTitle,
+      metaDesc,
+      focusKeyword,
+      canonicalUrl,
+      robotsMeta,
+      faq,
+      status,
+    } = body;
+
+    const stringifyIfNeeded = (val: any) =>
+      typeof val === "string" ? val : JSON.stringify(val || []);
 
     const payload = {
       title,
@@ -21,13 +73,25 @@ export async function PUT(
       shortDesc,
       fullDesc: fullDesc || shortDesc,
       image: image || "/images/projects/project-1.png",
+      imageAlt: imageAlt || title,
       icon: icon || "Factory",
-      specs: typeof specs === "string" ? specs : JSON.stringify(specs || []),
-      standards: typeof standards === "string" ? standards : JSON.stringify(standards || []),
+      specs: stringifyIfNeeded(specs),
+      standards: stringifyIfNeeded(standards),
+      challenges: stringifyIfNeeded(challenges),
+      solutions: stringifyIfNeeded(solutions),
+      relatedServices: stringifyIfNeeded(relatedServices),
+      relatedProjects: stringifyIfNeeded(relatedProjects),
+      relatedArticles: stringifyIfNeeded(relatedArticles),
+      metaTitle: metaTitle || title,
+      metaDesc: metaDesc || shortDesc,
+      focusKeyword: focusKeyword || "",
+      canonicalUrl: canonicalUrl || "",
+      robotsMeta: robotsMeta || "index, follow",
+      faq: stringifyIfNeeded(faq),
       status: status || "PUBLISHED",
     };
 
-    const existing = await prisma.industry.findFirst({
+    const existing = await db.industry.findFirst({
       where: {
         OR: [{ id: params.id }, { slug: params.id }, { slug: payload.slug }],
       },
@@ -35,20 +99,20 @@ export async function PUT(
 
     let updated;
     if (existing) {
-      updated = await prisma.industry.update({
+      updated = await db.industry.update({
         where: { id: existing.id },
         data: payload,
       });
     } else {
-      updated = await prisma.industry.create({
+      updated = await db.industry.create({
         data: payload,
       });
     }
 
     return NextResponse.json(updated);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating industry:", error);
-    return NextResponse.json({ error: "Failed to update industry" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update industry" }, { status: 500 });
   }
 }
 
@@ -56,20 +120,20 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getAdminSession();
+  const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const existing = await prisma.industry.findFirst({
+    const existing = await db.industry.findFirst({
       where: {
         OR: [{ id: params.id }, { slug: params.id }],
       },
     });
 
     if (existing) {
-      await prisma.industry.delete({
+      await db.industry.delete({
         where: { id: existing.id },
       });
     }

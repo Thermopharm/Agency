@@ -43,20 +43,30 @@ model Service {
 }
 
 model Industry {
-  id          String   @id @default(uuid())
-  slug        String   @unique
-  title       String
-  icon        String   @default("Factory")
-  shortDesc   String
-  fullDesc    String
-  image       String
-  specs       String   // Stored as JSON string
-  standards   String   // Stored as JSON string
-  metaTitle   String?
-  metaDesc    String?
-  status      String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  icon            String   @default("Factory")
+  shortDesc       String
+  fullDesc        String
+  image           String
+  imageAlt        String?  // Image Alt Text for SEO
+  specs           String   // Stored as JSON string
+  standards       String   // Stored as JSON string (ISO 14644, cGMP, etc.)
+  challenges      String?  // Stored as JSON string (Common Industry Challenges)
+  solutions       String?  // Stored as JSON string (Our Tailored Solutions)
+  relatedServices String?  // Stored as JSON string array of service slugs
+  relatedProjects String?  // Stored as JSON string array of project slugs
+  relatedArticles String?  // Stored as JSON string array of blog slugs
+  metaTitle       String?
+  metaDesc        String?
+  focusKeyword    String?  // Primary target keyword
+  canonicalUrl    String?  // Custom Canonical URL
+  robotsMeta      String?  @default("index, follow")
+  faq             String?  // Stored as JSON string (Q&As list)
+  status          String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Project {

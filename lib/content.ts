@@ -14,8 +14,20 @@ export interface IndustryType {
   fullDesc: string;
   icon: string;
   image: string;
+  imageAlt?: string | null;
   specs: string[];
   standards: string[];
+  challenges?: string[];
+  solutions?: string[];
+  relatedServices?: string[];
+  relatedProjects?: string[];
+  relatedArticles?: string[];
+  metaTitle?: string | null;
+  metaDesc?: string | null;
+  focusKeyword?: string | null;
+  canonicalUrl?: string | null;
+  robotsMeta?: string | null;
+  faq?: FAQItem[];
   status?: string;
 }
 
@@ -251,6 +263,12 @@ export async function getAllIndustries(): Promise<IndustryType[]> {
       ...ind,
       specs: safeParse<string[]>(ind.specs, []),
       standards: safeParse<string[]>(ind.standards, []),
+      challenges: safeParse<string[]>(ind.challenges, []),
+      solutions: safeParse<string[]>(ind.solutions, []),
+      relatedServices: safeParse<string[]>(ind.relatedServices, []),
+      relatedProjects: safeParse<string[]>(ind.relatedProjects, []),
+      relatedArticles: safeParse<string[]>(ind.relatedArticles, []),
+      faq: safeParse<FAQItem[]>(ind.faq, []),
     }));
 
     const merged: IndustryType[] = [...parsedDb];
@@ -273,6 +291,12 @@ export async function getIndustryBySlug(slug: string): Promise<IndustryType | nu
         ...dbInd,
         specs: safeParse<string[]>(dbInd.specs, []),
         standards: safeParse<string[]>(dbInd.standards, []),
+        challenges: safeParse<string[]>(dbInd.challenges, []),
+        solutions: safeParse<string[]>(dbInd.solutions, []),
+        relatedServices: safeParse<string[]>(dbInd.relatedServices, []),
+        relatedProjects: safeParse<string[]>(dbInd.relatedProjects, []),
+        relatedArticles: safeParse<string[]>(dbInd.relatedArticles, []),
+        faq: safeParse<FAQItem[]>(dbInd.faq, []),
       } as IndustryType;
     }
   } catch (e) {}
