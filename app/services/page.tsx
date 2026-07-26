@@ -5,7 +5,6 @@ import { ArrowRight, ArrowUpRight, Wind, Shield, Layers, Zap, FlaskConical, Atom
 import { getAllServices } from "@/lib/content";
 import { generateSeoMetadata } from "@/lib/seo";
 import FaqSection from "@/components/FaqSection";
-import { BorderBeamCard } from "@/components/ui/BorderBeamCard";
 
 export const dynamic = "force-dynamic";
 
@@ -40,28 +39,28 @@ export default async function ServicesPage() {
   const services = await getAllServices();
 
   return (
-    <div className="bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-slate-900 min-h-screen">
-      {/* Dark Hero */}
-      <section className="relative pt-32 pb-20 border-b border-slate-200 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(37,99,235,0.15),rgba(255,255,255,0))]" />
+    <div className="bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white min-h-screen">
+      {/* Hero Header */}
+      <section className="relative pt-36 pb-24 border-b border-slate-200/80 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100/50">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(37,99,235,0.08),rgba(255,255,255,0))]" />
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative z-10">
           <div className="max-w-3xl">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-4">
+            <span className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-4 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100">
               Our Turnkey Capabilities
-            </p>
-            <h1 className="font-display text-[clamp(38px,5.5vw,68px)] font-bold leading-[1.05] tracking-tight mb-6">
+            </span>
+            <h1 className="font-display text-[clamp(40px,5.5vw,72px)] font-extrabold text-slate-900 leading-[1.05] tracking-tight mb-6">
               Heavy-duty engineering <br />
-              for <span className="text-blue-500">demanding projects.</span>
+              for <span className="text-blue-600">demanding projects.</span>
             </h1>
-            <p className="text-slate-600 text-base lg:text-lg leading-relaxed">
+            <p className="text-slate-600 text-lg lg:text-xl leading-relaxed font-normal">
               Every system we build is designed for maximum uptime, strict regulatory compliance, and lifetime energy efficiency.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Services List (Machin Style Dark Cards) */}
-      <section className="py-24 bg-slate-100">
+      {/* Services List */}
+      <section className="py-24 bg-white">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="space-y-16">
             {services.map((svc, i) => {
@@ -70,11 +69,11 @@ export default async function ServicesPage() {
                 <div
                   key={svc.id}
                   id={`service-${svc.id}`}
-                  className="border-b border-slate-200 pb-16 last:border-0"
+                  className="border-b border-slate-200/80 pb-16 last:border-0"
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
                     {/* Image Column */}
-                    <div className="lg:col-span-5 relative aspect-[4/3] overflow-hidden rounded border border-slate-200 group bg-black">
+                    <div className="lg:col-span-5 relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200/80 shadow-sm group bg-slate-100">
                       <Image
                         src={svc.image}
                         alt={svc.title}
@@ -83,7 +82,7 @@ export default async function ServicesPage() {
                       />
                       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                         {svc.standards.slice(0, 2).map((std) => (
-                          <span key={std} className="px-2.5 py-1 bg-black/80 text-blue-400 border border-blue-500/30 text-[11px] font-bold uppercase tracking-wider rounded">
+                          <span key={std} className="px-3 py-1 bg-white/90 backdrop-blur-md text-blue-600 border border-blue-100 text-[11px] font-extrabold uppercase tracking-wider rounded-full shadow-sm">
                             {std}
                           </span>
                         ))}
@@ -94,10 +93,10 @@ export default async function ServicesPage() {
                     <div className="lg:col-span-7 flex flex-col justify-between h-full">
                       <div>
                         <div className="flex items-center gap-3 mb-4">
-                          <div className="w-8 h-8 flex items-center justify-center bg-blue-600 text-slate-900 rounded">
-                            <Icon className="w-4 h-4" />
+                          <div className="w-9 h-9 flex items-center justify-center bg-blue-600 text-white rounded-xl shadow-sm">
+                            <Icon className="w-5 h-5" />
                           </div>
-                          <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-blue-400">
+                          <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-blue-600">
                             0{i + 1} / SERVICE CATEGORY
                           </span>
                         </div>
@@ -112,8 +111,8 @@ export default async function ServicesPage() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                           {svc.specs.slice(0, 4).map((spec) => (
-                            <div key={spec} className="flex items-center gap-2.5 text-sm text-slate-700">
-                              <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                            <div key={spec} className="flex items-center gap-2.5 text-sm text-slate-700 font-medium">
+                              <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
                               <span>{spec}</span>
                             </div>
                           ))}
@@ -123,7 +122,7 @@ export default async function ServicesPage() {
                       <div>
                         <Link
                           href={`/services/${svc.slug}`}
-                          className="inline-flex items-center gap-2 bg-blue-600 text-slate-900 px-7 py-3 text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-blue-500 transition-colors rounded"
+                          className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3.5 text-xs font-bold uppercase tracking-[0.08em] hover:bg-blue-700 transition-all rounded-xl shadow-md shadow-blue-500/20"
                         >
                           Explore Technical Specifications
                           <ArrowUpRight className="w-4 h-4" />

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { companyInfo, navLinks, services } from "@/lib/data";
+import { companyInfo, services } from "@/lib/data";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -14,8 +14,8 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-slate-50 text-slate-900 border-t border-slate-200">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12">
+    <footer className="bg-white text-slate-900 border-t border-slate-200/80">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Logo & Brand description */}
           <div className="lg:col-span-2 space-y-4">
@@ -28,7 +28,7 @@ export default function Footer() {
                 className="h-9 w-auto object-contain"
               />
             </Link>
-            <p className="text-slate-500 text-xs leading-relaxed max-w-sm">
+            <p className="text-slate-600 text-xs leading-relaxed max-w-sm font-medium">
               Thermopharm Pvt. Ltd. delivers WHO-GMP, USFDA, and ISO 14644 compliant HVAC and cleanroom engineering solutions for pharmaceutical, healthcare, and high-tech manufacturing across India.
             </p>
             <div className="flex gap-3 pt-2">
@@ -37,7 +37,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 id="footer-linkedin"
-                className="w-8 h-8 rounded bg-white/5 hover:bg-blue-600 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white flex items-center justify-center text-slate-600 transition-colors shadow-sm"
                 aria-label="LinkedIn"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@ export default function Footer() {
               <a
                 href={companyInfo.socialLinks.email}
                 id="footer-email"
-                className="w-8 h-8 rounded bg-white/5 hover:bg-blue-600 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white flex items-center justify-center text-slate-600 transition-colors shadow-sm"
                 aria-label="Email"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -59,37 +59,37 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-slate-400 mb-4 text-[11px] uppercase tracking-widest">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[11px] uppercase tracking-widest">
               Quick Links
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2.5 font-medium">
               <li>
-                <Link href="/about" className="text-slate-600 hover:text-slate-900 text-xs transition-colors">
+                <Link href="/about" className="text-slate-600 hover:text-blue-600 text-xs transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-slate-600 hover:text-slate-900 text-xs transition-colors">
+                <Link href="/services" className="text-slate-600 hover:text-blue-600 text-xs transition-colors">
                   Engineering Services
                 </Link>
               </li>
               <li>
-                <Link href="/industries" className="text-slate-600 hover:text-slate-900 text-xs transition-colors">
+                <Link href="/industries" className="text-slate-600 hover:text-blue-600 text-xs transition-colors">
                   Industries Served
                 </Link>
               </li>
               <li>
-                <Link href="/projects" className="text-slate-600 hover:text-slate-900 text-xs transition-colors">
+                <Link href="/projects" className="text-slate-600 hover:text-blue-600 text-xs transition-colors">
                   Projects & Case Studies
                 </Link>
               </li>
               <li>
-                <Link href="/clients" className="text-slate-600 hover:text-slate-900 text-xs transition-colors">
+                <Link href="/clients" className="text-slate-600 hover:text-blue-600 text-xs transition-colors">
                   Clients & Partners
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-slate-600 hover:text-slate-900 text-xs transition-colors">
+                <Link href="/contact" className="text-slate-600 hover:text-blue-600 text-xs transition-colors">
                   Contact Us
                 </Link>
               </li>
@@ -98,15 +98,15 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="font-semibold text-slate-400 mb-4 text-[11px] uppercase tracking-widest">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[11px] uppercase tracking-widest">
               Core Solutions
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2.5 font-medium">
               {services.slice(0, 5).map((s) => (
                 <li key={s.id}>
                   <Link
                     href={`/services/${s.slug}`}
-                    className="text-slate-600 hover:text-slate-900 text-xs transition-colors"
+                    className="text-slate-600 hover:text-blue-600 text-xs transition-colors"
                   >
                     {s.title}
                   </Link>
@@ -117,18 +117,18 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-semibold text-slate-400 mb-4 text-[11px] uppercase tracking-widest">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[11px] uppercase tracking-widest">
               Head Office
             </h3>
-            <div className="text-slate-600 text-xs leading-relaxed space-y-2.5">
+            <div className="text-slate-600 text-xs leading-relaxed space-y-2.5 font-medium">
               <p>{companyInfo.address}</p>
               <p>
-                <a href={`mailto:${companyInfo.email}`} className="hover:text-slate-900 transition-colors block font-mono">
+                <a href={`mailto:${companyInfo.email}`} className="hover:text-blue-600 transition-colors block font-mono">
                   {companyInfo.email}
                 </a>
               </p>
               <p>
-                <a href={`tel:${companyInfo.phone}`} className="hover:text-slate-900 transition-colors block font-mono">
+                <a href={`tel:${companyInfo.phone}`} className="hover:text-blue-600 transition-colors block font-mono font-bold text-slate-800">
                   {companyInfo.phone}
                 </a>
               </p>
@@ -138,16 +138,16 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-slate-200 py-6 bg-[#040404]">
+      <div className="border-t border-slate-200/80 py-6 bg-slate-50/80">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-slate-400 text-[11px]">
+          <p className="text-slate-600 text-[11px] font-medium">
             © {new Date().getFullYear()} {companyInfo.name}. All Rights Reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="text-slate-400 hover:text-slate-600 text-[11px] transition-colors">
+            <Link href="/privacy" className="text-slate-600 hover:text-blue-600 text-[11px] font-medium transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/contact" className="text-slate-400 hover:text-slate-600 text-[11px] transition-colors">
+            <Link href="/contact" className="text-slate-600 hover:text-blue-600 text-[11px] font-medium transition-colors">
               Technical Consultation
             </Link>
           </div>

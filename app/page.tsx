@@ -5,7 +5,6 @@ import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, Award, Sparkles, CheckCircl
 import ContactForm from "@/components/ContactForm";
 import { services, clientLogos } from "@/lib/data";
 import { generateSeoMetadata } from "@/lib/seo";
-import { SpotlightGrid } from "@/components/ui/SpotlightGrid";
 import { NumberTicker } from "@/components/ui/NumberTicker";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { BorderBeamCard } from "@/components/ui/BorderBeamCard";
@@ -66,113 +65,103 @@ const tickerItems = [
 
 export default function HomePage() {
   return (
-    <>
-      {/* ── HERO WITH SPOTLIGHT & GRID ───────────────────────────────────── */}
-      <SpotlightGrid>
-        <section className="relative min-h-screen flex items-end overflow-hidden pt-40 pb-20">
-          {/* Hero background image with dark vignette */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/projects/project-1.png"
-              alt="Thermopharm engineering facility"
-              fill
-              priority
-              className="object-cover opacity-25"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent" />
-          </div>
+    <div className="bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white min-h-screen">
+      {/* ── HERO SECTION ───────────────────────────────────── */}
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-36 pb-24 bg-gradient-to-b from-white via-slate-50 to-slate-100/60">
+        {/* Subtle grid pattern background */}
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-60" />
 
-          <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
-              {/* Left Headline & CTAs */}
-              <div className="lg:col-span-8">
-                {/* Status Badge */}
-                <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[11px] font-semibold uppercase tracking-[0.15em] mb-6 rounded-full backdrop-blur-md">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
-                  WHO-GMP & ISO 14644 Compliant Engineering
-                </div>
-
-                <h1 className="font-display text-[clamp(42px,6.5vw,78px)] font-bold text-slate-900 leading-[0.98] tracking-tight mb-8">
-                  Precision <br />
-                  <span className="text-blue-500">Industrial HVAC</span> <br />
-                  & Cleanroom Systems.
-                </h1>
-
-                <p className="text-slate-700 text-base lg:text-xl max-w-2xl leading-relaxed mb-10">
-                  Engineering heavy-duty HVAC, cleanrooms, and automated facility controls for India&apos;s leading pharmaceutical, healthcare, and semiconductor manufacturers.
-                </p>
-
-                {/* Animated CTAs */}
-                <div className="flex flex-wrap gap-4">
-                  <Link
-                    id="hero-cta-quote"
-                    href="/contact"
-                    className="inline-flex items-center gap-2.5 bg-blue-600 text-slate-900 px-8 py-4 text-[12px] font-bold uppercase tracking-[0.1em] hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/30 hover:-translate-y-0.5 rounded"
-                  >
-                    Request Technical Proposal
-                  </Link>
-                  <Link
-                    id="hero-cta-projects"
-                    href="/projects"
-                    className="inline-flex items-center gap-2.5 border border-slate-300 text-slate-900 px-8 py-4 text-[12px] font-bold uppercase tracking-[0.1em] hover:bg-white/10 hover:border-white/40 transition-all hover:-translate-y-0.5 rounded"
-                  >
-                    View Case Studies
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left Headline & CTAs */}
+            <div className="lg:col-span-8">
+              {/* Status Badge */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-blue-50 border border-blue-100 text-blue-600 text-[11px] font-extrabold uppercase tracking-[0.18em] mb-6 rounded-full shadow-sm">
+                <Sparkles className="w-4 h-4 text-blue-600 animate-pulse" />
+                WHO-GMP & ISO 14644 Compliant Engineering
               </div>
 
-              {/* Right: Number Ticker Stats */}
-              <div className="lg:col-span-4 flex justify-start lg:justify-end">
-                <div className="grid grid-cols-2 gap-8 border-t lg:border-t-0 lg:border-l border-slate-200 pt-8 lg:pt-0 lg:pl-10">
-                  <div>
-                    <div className="text-4xl lg:text-5xl font-display font-extrabold text-slate-900 flex items-baseline">
-                      <NumberTicker value={250} suffix="+" />
-                    </div>
-                    <div className="text-slate-500 text-[11px] font-semibold uppercase tracking-[0.15em] mt-2">
-                      Projects Delivered
-                    </div>
+              <h1 className="font-display text-[clamp(44px,6.8vw,82px)] font-extrabold text-slate-900 leading-[1.02] tracking-tight mb-8">
+                Precision <br />
+                <span className="text-blue-600">Industrial HVAC</span> <br />
+                & Cleanroom Systems.
+              </h1>
+
+              <p className="text-slate-600 text-lg lg:text-xl max-w-2xl leading-relaxed mb-10 font-normal">
+                Engineering heavy-duty HVAC, cleanrooms, and automated facility controls for India&apos;s leading pharmaceutical, healthcare, and semiconductor manufacturers.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  id="hero-cta-quote"
+                  href="/contact"
+                  className="inline-flex items-center gap-2.5 bg-blue-600 text-white px-8 py-4 text-xs font-bold uppercase tracking-[0.1em] hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35 hover:-translate-y-0.5 rounded-xl"
+                >
+                  Request Technical Proposal
+                </Link>
+                <Link
+                  id="hero-cta-projects"
+                  href="/projects"
+                  className="inline-flex items-center gap-2.5 bg-white border border-slate-200/90 text-slate-800 px-8 py-4 text-xs font-bold uppercase tracking-[0.1em] hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm hover:-translate-y-0.5 rounded-xl"
+                >
+                  View Case Studies
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Number Ticker Stats */}
+            <div className="lg:col-span-4 flex justify-start lg:justify-end">
+              <div className="grid grid-cols-2 gap-8 border-t lg:border-t-0 lg:border-l border-slate-200/80 pt-8 lg:pt-0 lg:pl-10 w-full">
+                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <div className="text-4xl lg:text-5xl font-display font-extrabold text-slate-900 flex items-baseline">
+                    <NumberTicker value={250} suffix="+" />
                   </div>
-                  <div>
-                    <div className="text-4xl lg:text-5xl font-display font-extrabold text-slate-900 flex items-baseline">
-                      <NumberTicker value={18} suffix="+" />
-                    </div>
-                    <div className="text-slate-500 text-[11px] font-semibold uppercase tracking-[0.15em] mt-2">
-                      Years Excellence
-                    </div>
+                  <div className="text-slate-500 text-[11px] font-bold uppercase tracking-[0.15em] mt-2">
+                    Projects Delivered
                   </div>
-                  <div>
-                    <div className="text-4xl lg:text-5xl font-display font-extrabold text-blue-500 flex items-baseline">
-                      <NumberTicker value={100} suffix="%" />
-                    </div>
-                    <div className="text-slate-500 text-[11px] font-semibold uppercase tracking-[0.15em] mt-2">
-                      Audit Success Rate
-                    </div>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <div className="text-4xl lg:text-5xl font-display font-extrabold text-slate-900 flex items-baseline">
+                    <NumberTicker value={18} suffix="+" />
                   </div>
-                  <div>
-                    <div className="text-4xl lg:text-5xl font-display font-extrabold text-slate-900 flex items-baseline">
-                      <NumberTicker value={50} suffix="k m²" />
-                    </div>
-                    <div className="text-slate-500 text-[11px] font-semibold uppercase tracking-[0.15em] mt-2">
-                      Cleanroom Space
-                    </div>
+                  <div className="text-slate-500 text-[11px] font-bold uppercase tracking-[0.15em] mt-2">
+                    Years Excellence
+                  </div>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <div className="text-4xl lg:text-5xl font-display font-extrabold text-blue-600 flex items-baseline">
+                    <NumberTicker value={100} suffix="%" />
+                  </div>
+                  <div className="text-slate-500 text-[11px] font-bold uppercase tracking-[0.15em] mt-2">
+                    Audit Success Rate
+                  </div>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <div className="text-4xl lg:text-5xl font-display font-extrabold text-slate-900 flex items-baseline">
+                    <NumberTicker value={50} suffix="k m²" />
+                  </div>
+                  <div className="text-slate-500 text-[11px] font-bold uppercase tracking-[0.15em] mt-2">
+                    Cleanroom Space
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      </SpotlightGrid>
+        </div>
+      </section>
 
-      {/* ── HIGH-CONTRAST MARQUEE TEXT BAND (IMAGE 4 FIX) ─────────────────── */}
-      <section className="bg-[#050505] py-5 overflow-hidden border-y border-blue-500/20 relative shadow-2xl">
+      {/* ── HIGH-CONTRAST MARQUEE TEXT BAND ─────────────────── */}
+      <section className="bg-white py-5 overflow-hidden border-y border-slate-200/80 relative shadow-sm">
         <div className="animate-marquee flex whitespace-nowrap gap-0 items-center">
           {[...tickerItems, ...tickerItems, ...tickerItems].map((item, i) => (
-            <div key={i} className="flex items-center flex-shrink-0 px-6">
-              <span className="text-slate-900 font-display text-base md:text-lg font-bold uppercase tracking-widest flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#2563eb]" />
+            <div key={i} className="flex items-center flex-shrink-0 px-8">
+              <span className="text-slate-800 font-display text-sm md:text-base font-extrabold uppercase tracking-widest flex items-center gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
                 {item}
               </span>
             </div>
@@ -181,28 +170,28 @@ export default function HomePage() {
       </section>
 
       {/* ── ABOUT SECTION WITH SCROLL REVEAL ─────────────────────────────── */}
-      <section className="py-28 bg-slate-100 text-slate-900 overflow-hidden border-b border-slate-200">
+      <section className="py-28 bg-slate-50 text-slate-900 overflow-hidden border-b border-slate-200/80">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <ScrollReveal direction="up">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
               <div className="lg:col-span-3">
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 block">
                   Engineering Standard
-                </p>
+                </span>
               </div>
               <div className="lg:col-span-9">
                 <h2 className="font-display text-[clamp(26px,3.8vw,44px)] font-bold text-slate-900 leading-[1.15] tracking-tight">
-                  Thermopharm engineers <span className="text-blue-400">turnkey HVAC & cleanroom facilities</span> for high-load pharmaceutical, biotech, and industrial environments across India.
+                  Thermopharm engineers <span className="text-blue-600">turnkey HVAC & cleanroom facilities</span> for high-load pharmaceutical, biotech, and industrial environments across India.
                 </h2>
               </div>
             </div>
           </ScrollReveal>
 
-          {/* 4 Image Grid with Hover Effects */}
+          {/* 4 Image Grid with Glassmorphic Hover */}
           <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
             {aboutImages.map((img, i) => (
               <ScrollStaggerItem key={i}>
-                <div className="relative aspect-[4/5] overflow-hidden group border border-slate-200 rounded">
+                <div className="relative aspect-[4/5] overflow-hidden group border border-slate-200/80 rounded-2xl shadow-sm bg-white">
                   <Image
                     src={img.src}
                     alt={img.alt}
@@ -210,8 +199,8 @@ export default function HomePage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     sizes="(max-width: 768px) 50vw, 25vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <p className="text-slate-900 text-xs font-semibold uppercase tracking-wider">{img.alt}</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <p className="text-white text-xs font-bold uppercase tracking-wider">{img.alt}</p>
                   </div>
                 </div>
               </ScrollStaggerItem>
@@ -222,26 +211,26 @@ export default function HomePage() {
             <div>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-blue-600 text-slate-900 px-8 py-4 text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-blue-500 transition-colors rounded"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 text-xs font-bold uppercase tracking-[0.1em] hover:bg-blue-700 transition-all shadow-md rounded-xl"
               >
                 Discover Our History & Team
               </Link>
             </div>
-            <p className="text-slate-600 text-sm leading-relaxed">
+            <p className="text-slate-600 text-base leading-relaxed">
               Every Thermopharm system is engineered for maximum uptime, maintaining precise laminar air flow, particulate filtration, and temperature controls under extreme industrial operating conditions.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ── EQUIPMENT & CAPABILITIES WITH 3D TILT CARDS ─────────────────── */}
-      <section className="py-28 bg-slate-50 text-slate-900" id="services">
+      {/* ── EQUIPMENT & CAPABILITIES ─────────────────── */}
+      <section className="py-28 bg-white text-slate-900" id="services">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <ScrollReveal direction="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-3">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-3 block">
                 Turnkey Capabilities
-              </p>
+              </span>
               <h2 className="font-display text-[clamp(28px,4vw,48px)] font-bold text-slate-900 leading-[1.1] tracking-tight">
                 High-performance industrial <br />
                 equipment & systems.
@@ -250,13 +239,13 @@ export default function HomePage() {
             <Link
               href="/services"
               id="view-all-services"
-              className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.08em] text-blue-400 hover:gap-3 transition-all flex-shrink-0"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-blue-600 hover:gap-3 transition-all flex-shrink-0"
             >
               Explore All Services <ArrowRight className="w-4 h-4" />
             </Link>
           </ScrollReveal>
 
-          {/* 6-Card Grid with Border Beam & Tilt */}
+          {/* 6-Card Grid with Glassmorphic Cards */}
           <ScrollStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {equipmentCards.map((card, i) => (
               <ScrollStaggerItem key={i}>
@@ -265,10 +254,10 @@ export default function HomePage() {
                     <Link
                       href={`/services/${services[i]?.slug || "#"}`}
                       id={`equipment-card-${i}`}
-                      className="group block p-6 h-full flex flex-col justify-between bg-white rounded border border-slate-200"
+                      className="group block p-6 h-full flex flex-col justify-between bg-slate-50/70 hover:bg-white rounded-2xl border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow-lg transition-all duration-300"
                     >
                       <div>
-                        <div className="relative aspect-[4/3] overflow-hidden bg-gray-900 mb-6 border border-slate-200 rounded">
+                        <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 mb-6 border border-slate-200/80 rounded-xl">
                           <Image
                             src={card.image}
                             alt={card.title}
@@ -278,22 +267,22 @@ export default function HomePage() {
                           />
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] text-slate-500 uppercase tracking-[0.1em] mb-2 font-mono">
+                        <div className="flex items-center justify-between text-[11px] text-slate-500 uppercase tracking-[0.1em] mb-2 font-mono font-bold">
                           <span>{card.location}</span>
                           <span>{card.year}</span>
                         </div>
 
-                        <h3 className="font-display text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-400 transition-colors">
+                        <h3 className="font-display text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
                           {card.title}
                         </h3>
 
-                        <p className="text-slate-500 text-xs uppercase tracking-[0.06em]">
+                        <p className="text-slate-500 text-xs font-semibold uppercase tracking-[0.06em]">
                           Scope: {card.scope}
                         </p>
                       </div>
 
                       <div className="flex justify-end pt-6">
-                        <div className="w-9 h-9 bg-white/5 group-hover:bg-blue-600 text-slate-900 flex items-center justify-center transition-colors rounded">
+                        <div className="w-10 h-10 bg-white border border-slate-200 group-hover:bg-blue-600 group-hover:border-blue-600 group-hover:text-white text-slate-700 flex items-center justify-center transition-all rounded-xl shadow-sm">
                           <ArrowUpRight className="w-4 h-4" />
                         </div>
                       </div>
@@ -307,16 +296,16 @@ export default function HomePage() {
       </section>
 
       {/* ── CLIENT LOGO MARQUEE ────────────────────────────────────────── */}
-      <section className="py-20 bg-slate-100 text-slate-900 border-y border-slate-200">
+      <section className="py-20 bg-slate-50 text-slate-900 border-y border-slate-200/80">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-10 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400">
+          <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 block">
             Trusted by Top Pharmaceutical & Industrial Organizations
-          </p>
+          </span>
         </div>
         <div className="relative">
           <div className="animate-marquee flex whitespace-nowrap gap-16 items-center px-6">
             {[...clientLogos, ...clientLogos, ...clientLogos].map((client, i) => (
-              <div key={i} className="flex-shrink-0 h-12 w-auto grayscale brightness-200 opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+              <div key={i} className="flex-shrink-0 h-12 w-auto grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                 <Image
                   src={client.logo}
                   alt={client.name}
@@ -331,12 +320,12 @@ export default function HomePage() {
       </section>
 
       {/* ── TESTIMONIALS ──────────────────────────────────────────────── */}
-      <section className="py-24 bg-slate-50 text-slate-900 border-b border-slate-200">
+      <section className="py-24 bg-white text-slate-900 border-b border-slate-200/80">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <ScrollReveal direction="up" className="text-center mb-16">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-3">
+            <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-3 block">
               Client Feedback
-            </p>
+            </span>
             <h2 className="font-display text-[clamp(26px,3.5vw,40px)] font-bold text-slate-900 max-w-2xl mx-auto">
               Trusted by industry directors and quality assurance managers.
             </h2>
@@ -345,22 +334,22 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {testimonials.map((t, i) => (
               <ScrollReveal key={i} direction="up" delay={i * 0.1}>
-                <div className="bg-[#121212] border border-slate-200 p-8 h-full flex flex-col justify-between rounded">
+                <div className="bg-slate-50 border border-slate-200/80 p-8 h-full flex flex-col justify-between rounded-2xl shadow-sm hover:bg-white hover:shadow-md transition-all">
                   <div>
-                    <div className="flex gap-1 text-yellow-400 text-xs mb-4">
+                    <div className="flex gap-1 text-amber-500 text-xs mb-4">
                       ★★★★★
                     </div>
                     <p className="text-slate-700 text-sm leading-relaxed italic mb-6">
                       &ldquo;{t.content}&rdquo;
                     </p>
                   </div>
-                  <div className="flex items-center gap-3 pt-4 border-t border-slate-200">
-                    <div className="w-10 h-10 bg-blue-600 text-slate-900 font-bold text-sm flex items-center justify-center rounded">
+                  <div className="flex items-center gap-3 pt-4 border-t border-slate-200/70">
+                    <div className="w-10 h-10 bg-blue-600 text-white font-bold text-sm flex items-center justify-center rounded-xl">
                       {t.name.charAt(0)}
                     </div>
                     <div>
                       <p className="text-xs font-bold text-slate-900">{t.name}</p>
-                      <p className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">{t.role} · {t.company}</p>
+                      <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">{t.role} · {t.company}</p>
                     </div>
                   </div>
                 </div>
@@ -371,45 +360,45 @@ export default function HomePage() {
       </section>
 
       {/* ── CONTACT & LEAD CAPTURE SECTION ─────────────────────────────── */}
-      <section className="py-28 bg-[#070707] text-slate-900" id="contact">
+      <section className="py-28 bg-slate-50 text-slate-900 border-t border-slate-200/80" id="contact">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             <div className="lg:col-span-5 space-y-8">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-4">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-4 block">
                   Enquiry & Lead Consultation
-                </p>
-                <h2 className="font-display text-[clamp(32px,4vw,52px)] font-bold leading-[1.05] tracking-tight mb-6">
+                </span>
+                <h2 className="font-display text-[clamp(32px,4vw,52px)] font-bold leading-[1.05] tracking-tight mb-6 text-slate-900">
                   Discuss your <br />
-                  <span className="text-blue-400">engineering project.</span>
+                  <span className="text-blue-600">engineering project.</span>
                 </h2>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-slate-600 text-base leading-relaxed">
                   Fill out your technical requirements below. Submissions are instantly received by our lead engineering team.
                 </p>
               </div>
 
-              <div className="space-y-4 pt-4 border-t border-slate-200">
-                <div className="flex items-center gap-3 text-xs text-slate-700">
-                  <ShieldCheck className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              <div className="space-y-4 pt-6 border-t border-slate-200/80">
+                <div className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                  <ShieldCheck className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <span>WHO-GMP, ISO 14644 & USFDA Compliant Designs</span>
                 </div>
-                <div className="flex items-center gap-3 text-xs text-slate-700">
-                  <Zap className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <div className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <span>24-Hour Preliminary Engineering Assessment</span>
                 </div>
-                <div className="flex items-center gap-3 text-xs text-slate-700">
-                  <Award className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <div className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                  <Award className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <span>Pan-India Project Execution & AMC Support</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-7 bg-white p-8 lg:p-10 border border-slate-200 rounded">
-              <ContactForm darkMode />
+            <div className="lg:col-span-7 bg-white p-8 lg:p-10 border border-slate-200/80 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
+              <ContactForm />
             </div>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

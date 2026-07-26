@@ -145,7 +145,7 @@ export default function AdminIndustriesPage() {
           <Loader2 className="w-8 h-8 animate-spin" />
         </div>
       ) : industries.length === 0 ? (
-        <div className="text-center py-16 bg-[#121212] border border-slate-200 rounded-lg">
+        <div className="text-center py-16 bg-white border border-slate-200 rounded-lg shadow-sm">
           <AlertCircle className="w-10 h-10 text-gray-500 mx-auto mb-3" />
           <p className="text-gray-300 font-medium">No industries created yet.</p>
         </div>

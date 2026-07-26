@@ -18,16 +18,16 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
   return (
     <>
       {/* Filter buttons */}
-      <div className="flex flex-wrap gap-2 mb-16 border-b border-slate-200 pb-6">
+      <div className="flex flex-wrap gap-2.5 mb-16 border-b border-slate-200/80 pb-6">
         {categories.map((cat) => (
           <button
             key={cat}
             id={`filter-${cat.toLowerCase().replace(/\s+/g, "-")}`}
             onClick={() => setActive(cat)}
-            className={`px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] transition-all rounded ${
+            className={`px-6 py-2.5 text-xs font-bold uppercase tracking-[0.08em] transition-all rounded-xl ${
               active === cat
-                ? "bg-blue-600 text-slate-900"
-                : "bg-white/5 text-slate-600 hover:bg-white/10 hover:text-slate-900"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/80"
             }`}
           >
             {cat}
@@ -42,44 +42,48 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
             key={project.id}
             href={`/projects/${project.slug}`}
             id={`project-${project.id}`}
-            className="group block border border-slate-200 bg-[#121212] rounded overflow-hidden hover:border-blue-500/50 transition-all"
+            className="group block border border-slate-200/80 bg-white rounded-2xl overflow-hidden hover:border-slate-300 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
           >
-            <div className="relative aspect-[4/3] overflow-hidden bg-black">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-              <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                {project.tags.slice(0, 2).map((tag) => (
-                  <span key={tag} className="px-2.5 py-1 bg-black/80 text-blue-400 border border-blue-500/30 text-[10px] font-bold uppercase tracking-[0.06em] rounded">
-                    {tag}
-                  </span>
-                ))}
+            <div>
+              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                  {project.tags.slice(0, 2).map((tag) => (
+                    <span key={tag} className="px-3 py-1 bg-white/90 backdrop-blur-md text-blue-600 border border-blue-100 text-[10px] font-extrabold uppercase tracking-[0.06em] rounded-full shadow-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono font-bold uppercase tracking-[0.08em] mb-3">
+                  <span>{project.location}</span>
+                  <span>{project.year}</span>
+                </div>
+
+                <h3 className="font-display text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  {project.title}
+                </h3>
+
+                <p className="text-slate-600 text-xs leading-relaxed line-clamp-2 mb-6">
+                  {project.description}
+                </p>
               </div>
             </div>
 
-            <div className="p-6">
-              <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono uppercase tracking-[0.08em] mb-3">
-                <span>{project.location}</span>
-                <span>{project.year}</span>
-              </div>
-
-              <h3 className="font-display text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-400 transition-colors">
-                {project.title}
-              </h3>
-
-              <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 mb-6">
-                {project.description}
-              </p>
-
-              <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-blue-400">
+            <div className="px-6 pb-6 pt-0">
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-blue-600">
                   Read Case Study
                 </span>
-                <div className="w-8 h-8 flex items-center justify-center bg-white/5 group-hover:bg-blue-600 text-slate-900 transition-colors rounded">
+                <div className="w-9 h-9 flex items-center justify-center bg-blue-50 border border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all rounded-xl">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
               </div>
