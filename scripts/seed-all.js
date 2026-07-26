@@ -9,13 +9,21 @@ const initialServices = [
     icon: "Wind",
     shortDesc: "End-to-end HVAC design, installation, and commissioning for pharmaceutical plants, hospitals, and industrial facilities — built for regulatory compliance and lifetime reliability.",
     fullDesc: "Our HVAC solutions are designed by ISHRAE and ASHRAE-certified engineers who understand the critical importance of air quality in pharmaceutical and healthcare environments. We deliver systems that meet WHO-GMP, US-FDA, and EU-GMP standards.",
-    image: "/images/projects/project-2.png",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
     specs: JSON.stringify(["Dew point control down to -40°C", "HEPA H14 filtration (≥99.995% efficiency)", "Laminar and turbulent airflow design", "AHU selection and duct design per ASHRAE 62.1", "Energy-optimized VRF/VRV systems", "BMS integration and SCADA monitoring"]),
     standards: JSON.stringify(["ISO 14644", "WHO-GMP", "US-FDA 21 CFR Part 11", "ASHRAE 62.1"]),
     faq: JSON.stringify([
       { question: "What filtration levels do you provide?", answer: "We install multi-stage filtration from G4 pre-filters to F9 secondary filters and HEPA H14 final filters achieving 99.995% efficiency down to 0.3 microns." },
       { question: "Can you handle explosive environments?", answer: "Yes, we specify Flameproof (ATEX/IECEx certified) electrical motors, non-sparking fan impellers, and explosion-vented ductwork for chemical plants." }
-    ])
+    ]),
+    industriesServed: JSON.stringify(["Pharmaceuticals", "Biotechnology", "Healthcare & Hospitals"]),
+    serviceLocations: "Mumbai, Maharashtra, Vadodara, Hyderabad, Pan-India",
+    relatedServices: JSON.stringify(["cleanroom-solutions", "bms-automation"]),
+    metaTitle: "Turnkey Industrial HVAC Systems | Thermopharm Engineering",
+    metaDesc: "GMP-compliant industrial HVAC design, HEPA filtration & dew point control across India.",
+    publisher: "Thermopharm Engineering",
+    author: "Ashish Jha - Founder & Director",
+    status: "PUBLISHED"
   },
   {
     slug: "cleanroom-solutions",
@@ -23,12 +31,20 @@ const initialServices = [
     icon: "Shield",
     shortDesc: "Turnkey cleanroom design, construction, and validation for pharmaceutical manufacturing and sterile fill-finish — zero audit failures, guaranteed.",
     fullDesc: "We design, construct, and validate cleanrooms to ISO 14644 classifications (ISO 5 to ISO 8), delivering fully compliant environments for pharmaceutical API synthesis, sterile fill-finish, medical device manufacturing, and semiconductor fabrication.",
-    image: "/images/projects/project-3.png",
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=800&q=80",
     specs: JSON.stringify(["ISO 5 to ISO 8 classification", "Modular and stick-built construction", "PVC, GRP, and powder-coated steel panels", "Positive and negative pressure cascades", "Air shower and pass-box integration", "Particle count validation per ISO 14644-1"]),
     standards: JSON.stringify(["ISO 14644-1/2", "EU-GMP Annex 1", "NADCA standards", "cGMP"]),
     faq: JSON.stringify([
       { question: "Do you supply DQ/IQ/OQ/PQ validation documentation?", answer: "Yes, our validation team provides a complete cGMP-compliant qualification protocol package ready for regulatory inspection." }
-    ])
+    ]),
+    industriesServed: JSON.stringify(["Pharmaceuticals", "Biotechnology", "Medical Devices"]),
+    serviceLocations: "Pan-India & International Projects",
+    relatedServices: JSON.stringify(["hvac-systems", "bim-modelling"]),
+    metaTitle: "ISO Cleanroom Design & Validation | Thermopharm Engineering",
+    metaDesc: "Turnkey ISO 5 - ISO 8 modular cleanroom construction for pharma & sterile manufacturing.",
+    publisher: "Thermopharm Engineering",
+    author: "Ashish Jha - Founder & Director",
+    status: "PUBLISHED"
   },
   {
     slug: "bim-modelling",
@@ -36,12 +52,20 @@ const initialServices = [
     icon: "Layers",
     shortDesc: "Advanced 3D Building Information Modelling for clash detection, MEP coordination, and facility lifecycle management.",
     fullDesc: "Our in-house BIM team uses Autodesk Revit and Navisworks to create high-detail LOD 400 models for complex MEP and cleanroom installations, eliminating on-site spatial conflicts before fabrication begins.",
-    image: "/images/projects/project-4.png",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
     specs: JSON.stringify(["LOD 300 to LOD 500 modelling", "3D MEP clash detection & resolution", "As-built digital twin generation", "Constructability analysis", "4D scheduling & 5D cost estimating"]),
     standards: JSON.stringify(["ISO 19650", "PAS 1192", "USIBD standards"]),
     faq: JSON.stringify([
       { question: "What level of detail do you model?", answer: "We model up to LOD 400 with fabrication-ready MEP ducting, piping spools, and structural supports." }
-    ])
+    ]),
+    industriesServed: JSON.stringify(["Pharmaceuticals", "Heavy Industrial", "Healthcare"]),
+    serviceLocations: "Global Remote & On-Site",
+    relatedServices: JSON.stringify(["hvac-systems", "cleanroom-solutions"]),
+    metaTitle: "3D BIM MEP Clash Detection & LOD 400 | Thermopharm Engineering",
+    metaDesc: "Autodesk Revit 3D BIM MEP clash detection for pharmaceutical cleanrooms & factories.",
+    publisher: "Thermopharm Engineering",
+    author: "Ashish Jha - Founder & Director",
+    status: "PUBLISHED"
   },
   {
     slug: "bms-automation",
@@ -49,12 +73,20 @@ const initialServices = [
     icon: "Cpu",
     shortDesc: "Centralized Building Management Systems with 21 CFR Part 11 compliant audit trails, alarm logging, and energy optimization.",
     fullDesc: "We implement SCADA and PLC-based BMS solutions to continuously monitor differential pressure, temperature, relative humidity, and air velocity in critical spaces with 21 CFR Part 11 compliance.",
-    image: "/images/bms.jpg",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
     specs: JSON.stringify(["21 CFR Part 11 compliant audit trail", "BACnet & Modbus protocol integration", "Real-time alarm management & SMS alerts", "Energy metering & optimization dashboard", "Redundant server failover architecture"]),
     standards: JSON.stringify(["US-FDA 21 CFR Part 11", "GAMP 5", "IEEE 802.3"]),
     faq: JSON.stringify([
       { question: "Is your BMS compliant with FDA 21 CFR Part 11?", answer: "Yes, our systems include encrypted audit trails, multi-level electronic signatures, and password aging policies." }
-    ])
+    ]),
+    industriesServed: JSON.stringify(["Pharmaceuticals", "Healthcare", "Data Centers"]),
+    serviceLocations: "Pan-India",
+    relatedServices: JSON.stringify(["hvac-systems", "cleanroom-solutions"]),
+    metaTitle: "21 CFR Part 11 BMS & SCADA Automation | Thermopharm",
+    metaDesc: "Centralized BMS & SCADA environmental automation for cleanrooms & critical spaces.",
+    publisher: "Thermopharm Engineering",
+    author: "Ashish Jha - Founder & Director",
+    status: "PUBLISHED"
   }
 ];
 
@@ -65,7 +97,7 @@ const initialIndustries = [
     icon: "FlaskConical",
     shortDesc: "GMP-certified HVAC, cleanrooms, and sterile containment facilities for API synthesis and formulation plants.",
     fullDesc: "Thermopharm delivers WHO-GMP, US-FDA, and EU-GMP compliant cleanrooms, HVAC systems, and clean utility piping for pharmaceutical API blocks, sterile fill-finish suites, and biotechnology research centers.",
-    image: "/images/projects/project-1.png",
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=800&q=80",
     specs: JSON.stringify(["ISO 5 to ISO 8 Cleanroom", "Dew point control down to -40°C", "HEPA H14 Filtration", "21 CFR Part 11 Audit Trail"]),
     standards: JSON.stringify(["WHO TRS 961", "US-FDA 21 CFR Part 210/211", "EU-GMP Annex 1", "ISO 14644"]),
   },
@@ -75,7 +107,7 @@ const initialIndustries = [
     icon: "Activity",
     shortDesc: "NABH and ASHRAE 170 compliant HVAC for operating theatres, isolation ICUs, and CSSD departments.",
     fullDesc: "We engineer precise pressure-cascaded HVAC networks for super-specialty hospitals, maintaining positive pressure in operating rooms and negative pressure in infectious disease isolation wards.",
-    image: "/images/projects/project-4.png",
+    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80",
     specs: JSON.stringify(["Modular OT HVAC", "Negative Pressure Isolation Wards", "Laminar Airflow Workstations", "NABH Accreditation Support"]),
     standards: JSON.stringify(["ASHRAE 170-2021", "NABH Guidelines", "CDC Isolation Standards"]),
   },
@@ -85,7 +117,7 @@ const initialIndustries = [
     icon: "Cpu",
     shortDesc: "Ultra-low humidity (<25% RH) and ESD-protected cleanrooms for semiconductor wafer and solar panel production.",
     fullDesc: "Precision environmental control systems tailored for semiconductor assembly, PCB micro-electronics, and thin-film solar cell deposition lines with desiccant dehumidification.",
-    image: "/images/projects/project-3.png",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
     specs: JSON.stringify(["Ultra-Low Humidity (<25% RH)", "ESD Epoxy Flooring", "ISO 6 Cleanroom", "Vibration-Isolated Equipment Pads"]),
     standards: JSON.stringify(["ISO 14644-1", "ESD STM11.11", "ASHRAE TC 9.9"]),
   },
@@ -95,7 +127,7 @@ const initialIndustries = [
     icon: "Atom",
     shortDesc: "HAZOP-reviewed ventilation, hazardous gas extraction, and process chiller plants for chemical manufacturing.",
     fullDesc: "Heavy-duty chemical plant ventilation systems built for corrosive air handling, explosive zone electrical isolation, and process heat extraction.",
-    image: "/images/chiller.jpg",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
     specs: JSON.stringify(["Flameproof AHU & Fan Assembly", "Scrubber Systems", "Heavy Duty Process Chillers", "HAZOP Safety Review"]),
     standards: JSON.stringify(["ASME B31.3", "API 510/570", "OSHA PSM", "IS 2825"]),
   },
@@ -105,7 +137,7 @@ const initialIndustries = [
     icon: "Utensils",
     shortDesc: "HACCP-compliant hygiene ventilation and cold storage temperature management for dairy and food manufacturing.",
     fullDesc: "Specialized sanitary airflow design for milk powder processing, cheese rooms, confectionery packaging, and cold chain refrigeration.",
-    image: "/images/projects/project-5.png",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
     specs: JSON.stringify(["HACCP Air Quality Control", "Positive Pressure Packaging", "Condensation Prevention", "Cleanable Ductwork"]),
     standards: JSON.stringify(["FSSAI Guidelines", "HACCP Principles", "ISO 22000"]),
   },
@@ -118,29 +150,57 @@ const initialProjects = [
     location: "Pune, Maharashtra",
     year: "2024",
     client: "Cipla Biotech",
-    category: "Cleanroom & HVAC",
-    image: "/images/projects/project-1.png",
+    category: "Cleanrooms",
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=800&q=80",
+    imageAlt: "Cipla Biotech sterile cleanroom installation",
+    gallery: JSON.stringify([{ url: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=800&q=80", alt: "Sterile filling suite" }]),
     description: "Turnkey ISO 5 modular cleanroom execution with integrated HEPA H14 ceiling grid and positive pressure cascades for sterile injectable production.",
     challenge: "Maintaining strict ISO 5 particle counts with continuous 24/7 HVAC operation while minimizing energy consumption.",
     solution: "Installed variable-speed EC fan filter units paired with desiccant dehumidifiers and automated BMS pressure control.",
     results: JSON.stringify(["Zero particle exceedances during validation", "22% energy reduction compared to conventional AHUs", "Passed US-FDA audit first time"]),
     tags: JSON.stringify(["ISO 5", "Sterile Fill-Finish", "BMS Integration"]),
-    faq: JSON.stringify([{ question: "What was the validation timeline?", answer: "Complete DQ to PQ validation was finished within 21 days." }])
+    faq: JSON.stringify([{ question: "What was the validation timeline?", answer: "Complete DQ to PQ validation was finished within 21 days." }]),
+    facilitySize: "32,000 sq. ft.",
+    industrySector: "Vaccines & Injectables",
+    complianceStandards: JSON.stringify(["ISO 14644 Class 5", "US-FDA 21 CFR Part 11", "EU-GMP Grade A"]),
+    technologiesUsed: JSON.stringify(["3D BIM Modeling", "HEPA H14", "EC Fan Filter Units"]),
+    testimonialQuote: "Thermopharm delivered our ISO Class 5 sterile suite 2 weeks ahead of schedule with 100% audit pass rate.",
+    testimonialAuthor: "Dr. Rajesh Sharma - VP Operations, Cipla Biotech",
+    relatedServices: JSON.stringify(["Cleanroom Solutions", "BMS & Automation"]),
+    metaTitle: "Cipla Sterile Cleanroom Case Study | Thermopharm",
+    metaDesc: "Turnkey ISO 5 cleanroom construction for Cipla Biotech with 100% US-FDA compliance.",
+    publisher: "Thermopharm Engineering",
+    author: "Ashish Jha - Founder & Director",
+    status: "PUBLISHED"
   },
   {
     slug: "sun-pharma-hvac-overhaul",
-    title: "Sun Pharma Formulations Plant HVAC",
-    location: "Halol, Gujarat",
+    title: "Sun Pharma OSD Block HVAC Overhaul",
+    location: "Vadodara, Gujarat",
     year: "2023",
     client: "Sun Pharma",
-    category: "Industrial HVAC",
-    image: "/images/projects/project-2.png",
+    category: "HVAC Systems",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
+    imageAlt: "Sun Pharma HVAC AHU ducting installation",
+    gallery: JSON.stringify([{ url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", alt: "Chilled water piping network" }]),
     description: "Complete HVAC redesign and chilled water piping installation for a 45,000 sq. ft. oral solid dosage (OSD) manufacturing block.",
     challenge: "Executing the entire system replacement during a tight 14-day plant shutdown without disturbing adjacent operating suites.",
     solution: "Pre-fabricated modular pipe spools using 3D BIM modelling and executed 3-shift installation teams around the clock.",
     results: JSON.stringify(["Completed 36 hours ahead of scheduled shutdown", "Zero cross-contamination between processing bays", "Maintained 20°C ± 1°C and 45% ± 5% RH"]),
     tags: JSON.stringify(["OSD Block", "Chilled Water Piping", "3D BIM"]),
-    faq: JSON.stringify([{ question: "Was plant downtime minimized?", answer: "Yes, pre-fabrication allowed us to complete the switchover in under 12 days." }])
+    faq: JSON.stringify([{ question: "Was plant downtime minimized?", answer: "Yes, pre-fabrication allowed us to complete the switchover in under 12 days." }]),
+    facilitySize: "45,000 sq. ft.",
+    industrySector: "Oral Solid Dosage (OSD)",
+    complianceStandards: JSON.stringify(["ISO 14644 Class 7", "cGMP", "US-FDA 21 CFR Part 11"]),
+    technologiesUsed: JSON.stringify(["3D BIM Modeling", "Chilled Water Piping", "AHU & VFDs"]),
+    testimonialQuote: "The BIM MEP coordination and chilled water overhaul executed by Thermopharm reduced our energy footprint by 22%.",
+    testimonialAuthor: "Vikram Malhotra - Head of Facilities, Sun Pharma",
+    relatedServices: JSON.stringify(["HVAC Systems", "BIM Modelling"]),
+    metaTitle: "OSD Block HVAC Overhaul | Thermopharm Engineering",
+    metaDesc: "45,000 SQFT OSD cleanroom HVAC overhaul for Sun Pharma Gujarat.",
+    publisher: "Thermopharm Engineering",
+    author: "Ashish Jha - Founder & Director",
+    status: "PUBLISHED"
   }
 ];
 
@@ -150,9 +210,9 @@ const initialBlogs = [
     title: "Understanding ISO 14644-1 Cleanroom Standards for Pharma",
     excerpt: "A practical breakdown of particle count limits, air change rates, and validation requirements for ISO 5 through ISO 8 cleanroom facilities.",
     content: "Cleanrooms in pharmaceutical manufacturing must conform to ISO 14644-1 standards. This guide covers particle concentration limits (0.1µm to 5.0µm), airflow velocity thresholds, and qualification protocol strategies...",
-    image: "/images/projects/project-3.png",
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=800&q=80",
     category: "Cleanroom Standards",
-    author: "Ashish Patel (Managing Director)",
+    author: "Ashish Jha (Founder & Director)",
     date: "July 20, 2024",
     readTime: "6 min read",
     faq: JSON.stringify([{ question: "What is the difference between ISO 5 and Grade A?", answer: "ISO 5 defines particle limits, while EU-GMP Grade A adds microbiological monitoring criteria under operational states." }])
@@ -162,9 +222,9 @@ const initialBlogs = [
     title: "Achieving Low Dew Point Control (-40°C) in Critical HVAC",
     excerpt: "How desiccant dehumidification and precise psychrometric design prevent moisture-induced active ingredient degradation.",
     content: "Moisture control is vital in effervescent tablet production and hygroscopic chemical handling. We detail the engineering behind desiccant rotor integration...",
-    image: "/images/chiller.jpg",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
     category: "HVAC Engineering",
-    author: "Engineering Team",
+    author: "Thermopharm HVAC Engineering Team",
     date: "June 15, 2024",
     readTime: "8 min read",
     faq: JSON.stringify([{ question: "Why is -40°C dew point needed?", answer: "Hygroscopic API formulations absorb moisture rapidly at higher humidity, leading to caking and loss of active efficacy." }])
@@ -177,22 +237,45 @@ const initialTestimonials = [
     role: "Director of Operations",
     company: "Cipla Biotech Labs",
     content: "Thermopharm's engineering team executed our ISO 5 sterile cleanroom flawlessly. Their deep understanding of WHO-GMP guidelines ensured we passed our international audit with zero observations.",
-    rating: 5
+    rating: 5,
+    status: "PUBLISHED"
   },
   {
     name: "Vikram Malhotra",
-    role: "VP Engineering",
+    role: "VP Engineering & Facilities",
     company: "Sun Pharmaceutical Industries",
     content: "The BIM MEP coordination and chilled water system overhaul executed by Thermopharm reduced our facility energy footprint by 22% while keeping tight humidity tolerances.",
-    rating: 5
+    rating: 5,
+    status: "PUBLISHED"
+  }
+];
+
+const initialLeads = [
+  {
+    name: "Amit Patel",
+    company: "Zydus Lifesciences",
+    email: "amit.patel@zydus.example.com",
+    phone: "+91 98765 43210",
+    service: "Cleanroom Solutions",
+    message: "We require a turnkey DQ/IQ/OQ/PQ validated ISO Class 6 cleanroom for our new injectable block in Ahmedabad.",
+    status: "NEW"
+  },
+  {
+    name: "Sandeep Verma",
+    company: "Lupin Pharma",
+    email: "sandeep.v@lupin.example.com",
+    phone: "+91 98123 45678",
+    service: "HVAC Systems",
+    message: "Looking for an HVAC overhaul with HEPA filtration for our 25,000 sq ft API synthesis facility in Goa.",
+    status: "CONTACTED"
   }
 ];
 
 async function main() {
-  console.log("Seeding Database...");
+  console.log("Seeding Supabase PostgreSQL Database...");
 
   // 1. Admin User
-  const email = process.env.ADMIN_EMAIL || "Ashish@thermopharm.in";
+  const email = (process.env.ADMIN_EMAIL || "Ashish@thermopharm.in").trim().toLowerCase();
   const password = process.env.ADMIN_PASSWORD || "Ashish@1998";
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -201,7 +284,7 @@ async function main() {
     update: { passwordHash },
     create: { email, passwordHash },
   });
-  console.log(`✓ Admin user created/updated: ${email}`);
+  console.log(`✓ Admin user ready: ${email}`);
 
   // 2. Services
   for (const s of initialServices) {
@@ -252,7 +335,16 @@ async function main() {
   }
   console.log(`✓ Seeded ${initialTestimonials.length} Testimonials`);
 
-  console.log("SUCCESS: All initial content successfully populated in database!");
+  // 7. Inquiries / Leads
+  for (const l of initialLeads) {
+    const existing = await prisma.lead.findFirst({ where: { email: l.email } });
+    if (!existing) {
+      await prisma.lead.create({ data: l });
+    }
+  }
+  console.log(`✓ Seeded ${initialLeads.length} Inquiries / Leads`);
+
+  console.log("SUCCESS: All initial content pushed to Supabase PostgreSQL!");
 }
 
 main()
