@@ -474,14 +474,14 @@ export const team = [
     name: "Sudip Yadav",
     role: "Design Manager",
     bio: "Head of engineering design & BIM coordination. Expertise in LOD 400 MEP modelling, air cascade optimization, and ASHRAE/ISO compliant facility layouts.",
-    image: "/images/team/Sudip Yadav.jpg",
+    image: "/images/team/sudip-yadav.jpg",
     linkedin: "https://www.linkedin.com/in/sudip-yadav/",
   },
   {
     name: "Khushbu Jha",
     role: "Director",
     bio: "Executive Director overseeing strategic growth, client partnerships, quality management systems, and organizational operations at ThermoPharm.",
-    image: "/images/team/Khushbu Jha.jpeg",
+    image: "/images/team/khushbu-jha.jpeg",
     linkedin: "#",
   },
 ];

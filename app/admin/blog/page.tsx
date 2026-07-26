@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Plus, Edit, Trash2, ArrowLeft, FileText } from "lucide-react";
+import Image from "next/image";
+import { Plus, Edit2, Trash2 } from "lucide-react";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -16,87 +17,94 @@ export default async function AdminBlogPage() {
 
   return (
     <div className="space-y-6">
+      {/* Top Header Row */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <Link
-            href="/admin"
-            className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-gray-900 transition-colors mb-2"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Dashboard
-          </Link>
-          <h1 className="font-display text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="w-8 h-8 text-blue-600" />
-            Manage Blog Posts
+          <h1 className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
+            Manage Articles & Journal
           </h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Create, edit, or delete engineering articles displayed on the public blog.
+          <p className="text-slate-400 text-xs font-medium mt-1">
+            {posts.length} total articles
           </p>
         </div>
         <Link
           href="/admin/blog/new"
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:shadow-lg hover:shadow-blue-500/20 text-slate-900 font-semibold px-5 py-3 rounded-xl text-sm transition-all"
+          className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white font-bold px-5 py-3 rounded-xl text-xs tracking-wider transition-all shadow-sm"
         >
-          <Plus className="w-4 h-4" /> Add Blog Post
+          <Plus className="w-4 h-4" />
+          <span>New Article</span>
         </Link>
       </div>
 
-      <div className="bg-white rounded-3xl border border-gray-150 shadow-sm overflow-hidden">
-        {posts.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
-            <p className="text-lg font-semibold">No blog posts found</p>
-            <p className="text-sm mt-1">Add your first engineering article to get started.</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                  <th className="px-6 py-4">Title</th>
-                  <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4">Author</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 text-sm text-gray-600">
-                {posts.map((post) => (
-                  <tr key={post.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-gray-900">{post.title}</td>
-                    <td className="px-6 py-4">{post.category}</td>
-                    <td className="px-6 py-4">{post.author}</td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          post.status === "PUBLISHED"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-amber-100 text-amber-800"
-                        }`}
-                      >
-                        {post.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right space-x-2">
-                      <Link
-                        href={`/admin/blog/${post.id}`}
-                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 hover:border-blue-600 hover:text-blue-600 transition-colors"
-                        title="Edit Post"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Link>
-                      <button
-                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 hover:border-red-600 hover:text-red-600 transition-colors"
-                        title="Delete Post"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      {/* Blog Posts List */}
+      {posts.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-12 text-center text-slate-400">
+          <p className="text-base font-bold text-slate-700">No blog posts found</p>
+          <p className="text-xs mt-1">Add your first engineering article to get started.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-4 shadow-sm hover:border-slate-300 transition-all group"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                {/* Thumbnail */}
+                <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-200 text-slate-400 font-bold text-xs">
+                      BLOG
+                    </div>
+                  )}
+                </div>
+
+                {/* Details */}
+                <div className="min-w-0">
+                  <h3 className="font-bold text-sm md:text-base text-slate-900 truncate tracking-tight group-hover:text-blue-600 transition-colors">
+                    {post.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-slate-400 font-mono text-xs mt-0.5 truncate">
+                    <span>/blog/{post.slug}</span>
+                    <span>·</span>
+                    <span>{post.category || "Engineering"}</span>
+                    {post.date && (
+                      <>
+                        <span>·</span>
+                        <span>{post.date}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <Link
+                  href={`/admin/blog/${post.id}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs transition-all"
+                >
+                  <Edit2 className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Edit</span>
+                </Link>
+                <button
+                  className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  title="Delete Post"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

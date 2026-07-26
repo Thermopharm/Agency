@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Edit3, Factory, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import Image from "next/image";
+import { Plus, Trash2, Edit2, Factory, Loader2 } from "lucide-react";
 
 interface Industry {
   id: string;
@@ -119,73 +120,83 @@ export default function AdminIndustriesPage() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-200">
+    <div className="space-y-6">
+      {/* Top Header Row */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-blue-400 uppercase">
-            <Factory className="w-4 h-4" /> Management Portal
-          </div>
-          <h1 className="text-3xl font-bold text-slate-900 mt-1">Industries Sector Management</h1>
-          <p className="text-sm text-gray-400 mt-1">
-            Add, update, or remove target industry sectors served by Thermopharm.
+          <h1 className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
+            Manage Target Industries
+          </h1>
+          <p className="text-slate-400 text-xs font-medium mt-1">
+            {industries.length} total industries
           </p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-slate-900 text-xs font-semibold uppercase tracking-wider px-5 py-3 rounded transition"
+          className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white font-bold px-5 py-3 rounded-xl text-xs tracking-wider transition-all shadow-sm"
         >
-          <Plus className="w-4 h-4" /> Add New Industry
+          <Plus className="w-4 h-4" />
+          <span>New Industry</span>
         </button>
       </div>
 
-      {/* List / Cards */}
+      {/* Industries List View */}
       {loading ? (
-        <div className="flex justify-center items-center py-20 text-gray-400">
-          <Loader2 className="w-8 h-8 animate-spin" />
+        <div className="flex justify-center items-center py-20 text-slate-400">
+          <Loader2 className="w-6 h-6 animate-spin" />
         </div>
       ) : industries.length === 0 ? (
-        <div className="text-center py-16 bg-white border border-slate-200 rounded-lg shadow-sm">
-          <AlertCircle className="w-10 h-10 text-gray-500 mx-auto mb-3" />
-          <p className="text-gray-300 font-medium">No industries created yet.</p>
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-12 text-center text-slate-400">
+          <p className="text-base font-bold text-slate-700">No industries created yet</p>
+          <p className="text-xs mt-1">Add target sectors served by Thermopharm.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-3">
           {industries.map((ind) => (
             <div
               key={ind.id}
-              className="bg-white border border-slate-200 rounded-lg p-6 flex flex-col justify-between hover:border-slate-300 transition"
+              className="bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-4 shadow-sm hover:border-slate-300 transition-all group"
             >
-              <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-xs font-mono px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
-                    {ind.slug}
-                  </span>
-                  <span
-                    className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded ${
-                      ind.status === "PUBLISHED"
-                        ? "bg-green-500/10 text-green-400 border border-green-500/20"
-                        : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
-                    }`}
-                  >
-                    {ind.status}
-                  </span>
+              <div className="flex items-center gap-4 min-w-0">
+                {/* Thumbnail */}
+                <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100 flex items-center justify-center">
+                  {ind.image ? (
+                    <Image
+                      src={ind.image}
+                      alt={ind.title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <Factory className="w-6 h-6 text-slate-400" />
+                  )}
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{ind.title}</h3>
-                <p className="text-xs text-gray-400 line-clamp-3 mb-4">{ind.shortDesc}</p>
+
+                {/* Details */}
+                <div className="min-w-0">
+                  <h3 className="font-bold text-sm md:text-base text-slate-900 truncate tracking-tight group-hover:text-blue-600 transition-colors">
+                    {ind.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-slate-400 font-mono text-xs mt-0.5 truncate">
+                    <span>/industries/{ind.slug}</span>
+                    <span>·</span>
+                    <span className="truncate max-w-xs">{ind.shortDesc || "Industrial Sector"}</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-200 flex justify-end gap-2">
+              {/* Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={() => handleOpenModal(ind)}
-                  className="p-2 text-gray-400 hover:text-slate-900 hover:bg-white/5 rounded transition"
-                  title="Edit Industry"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs transition-all"
                 >
-                  <Edit3 className="w-4 h-4" />
+                  <Edit2 className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Edit</span>
                 </button>
                 <button
                   onClick={() => handleDelete(ind.id)}
-                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded transition"
+                  className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   title="Delete Industry"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -196,17 +207,17 @@ export default function AdminIndustriesPage() {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Modal Dialog */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-white border border-white/15 w-full max-w-xl rounded-lg p-6 text-slate-900 space-y-5">
-            <h2 className="text-xl font-bold">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+          <div className="bg-white border border-slate-200/80 w-full max-w-xl rounded-3xl p-6 text-slate-800 shadow-2xl space-y-5">
+            <h2 className="text-lg font-bold text-slate-900">
               {editingId ? "Edit Industry Sector" : "Add New Industry Sector"}
             </h2>
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                  Industry Title *
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  INDUSTRY TITLE *
                 </label>
                 <input
                   type="text"
@@ -214,26 +225,26 @@ export default function AdminIndustriesPage() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. Pharmaceutical & Biotech"
-                  className="w-full bg-slate-50 border border-white/15 px-3 py-2 text-sm rounded focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-slate-200 px-3.5 py-2.5 text-xs rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                  Slug (URL identifier)
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  SLUG (URL PATH)
                 </label>
                 <input
                   type="text"
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  placeholder="e.g. pharmaceutical-biotech"
-                  className="w-full bg-slate-50 border border-white/15 px-3 py-2 text-sm rounded focus:outline-none focus:border-blue-500"
+                  placeholder="pharmaceutical-biotech"
+                  className="w-full bg-white border border-slate-200 px-3.5 py-2.5 text-xs rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                  Short Summary *
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  SHORT SUMMARY *
                 </label>
                 <textarea
                   rows={2}
@@ -241,62 +252,35 @@ export default function AdminIndustriesPage() {
                   value={formData.shortDesc}
                   onChange={(e) => setFormData({ ...formData, shortDesc: e.target.value })}
                   placeholder="Brief 1-2 sentence overview for card view..."
-                  className="w-full bg-slate-50 border border-white/15 px-3 py-2 text-sm rounded focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-slate-200 px-3.5 py-2.5 text-xs rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                  Full Detailed Description
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                  FULL DESCRIPTION
                 </label>
                 <textarea
                   rows={4}
                   value={formData.fullDesc}
                   onChange={(e) => setFormData({ ...formData, fullDesc: e.target.value })}
                   placeholder="Detailed specifications, compliance notes..."
-                  className="w-full bg-slate-50 border border-white/15 px-3 py-2 text-sm rounded focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-slate-200 px-3.5 py-2.5 text-xs rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                    Image Path
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    className="w-full bg-slate-50 border border-white/15 px-3 py-2 text-sm rounded focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                    Status
-                  </label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full bg-slate-50 border border-white/15 px-3 py-2 text-sm rounded focus:outline-none focus:border-blue-500"
-                  >
-                    <option value="PUBLISHED">PUBLISHED</option>
-                    <option value="DRAFT">DRAFT</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 text-xs uppercase tracking-wider text-gray-400 hover:text-slate-900"
+                  className="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-slate-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-slate-900 text-xs font-semibold uppercase tracking-wider rounded transition flex items-center gap-2"
+                  className="px-5 py-2.5 bg-black hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-sm"
                 >
                   {saving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   {editingId ? "Save Changes" : "Create Industry"}

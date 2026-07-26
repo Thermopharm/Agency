@@ -2,7 +2,28 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Plus, Trash2, ArrowLeft, Loader2, Upload } from "lucide-react";
+import Link from "next/link";
+import {
+  Save,
+  Plus,
+  Trash2,
+  ArrowLeft,
+  Loader2,
+  Upload,
+  Sparkles,
+  Globe,
+  X,
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  Quote,
+  Code,
+  List,
+  Link as LinkIcon,
+  Image as ImageIcon,
+  Check
+} from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -39,11 +60,13 @@ export default function BlogForm({ initialData }: BlogFormProps) {
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || "");
   const [content, setContent] = useState(initialData?.content || "");
   const [image, setImage] = useState(initialData?.image || "");
+  const [imageAlt, setImageAlt] = useState(initialData?.title || "");
   const [category, setCategory] = useState(initialData?.category || "HVAC Engineering");
   const [author, setAuthor] = useState(initialData?.author || "Thermopharm Expert");
   const [date, setDate] = useState(initialData?.date || new Date().toISOString().split("T")[0]);
   const [readTime, setReadTime] = useState(initialData?.readTime || "5 min read");
-  const [status, setStatus] = useState(initialData?.status || "PUBLISHED");
+  const [status, setStatus] = useState(initialData?.status || "DRAFT");
+  const [imageTab, setImageTab] = useState<"url" | "upload">("url");
 
   // Arrays
   const [faq, setFaq] = useState<FAQItem[]>(initialData?.faq || []);
@@ -56,13 +79,22 @@ export default function BlogForm({ initialData }: BlogFormProps) {
   const handleTitleChange = (val: string) => {
     setTitle(val);
     if (!initialData?.id) {
-      setSlug(
-        val
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "")
-      );
+      const generatedSlug = val
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
+      setSlug(generatedSlug);
+      setMetaTitle(val.slice(0, 60));
     }
+  };
+
+  const handleResetSlug = () => {
+    setSlug(
+      title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "")
+    );
   };
 
   // Image Upload Handler
@@ -86,9 +118,13 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     }
   };
 
+  // Insert helper
+  const handleInsertSnippet = (snippet: string) => {
+    setContent((prev) => prev + "\n" + snippet);
+  };
+
   // Submit Handler
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (targetStatus: string) => {
     setLoading(true);
     setError(null);
 
@@ -105,7 +141,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
       faq,
       metaTitle,
       metaDesc,
-      status,
+      status: targetStatus,
     };
 
     try {
@@ -133,246 +169,256 @@ export default function BlogForm({ initialData }: BlogFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <div className="space-y-6 pb-20 font-sans antialiased text-slate-800 max-w-6xl mx-auto">
+      {/* Top Bar Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-5">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/blog"
+            className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to all posts</span>
+          </Link>
+          <span
+            className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${
+              status === "PUBLISHED"
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                : "bg-amber-50 text-amber-700 border-amber-200"
+            }`}
+          >
+            {status}
+          </span>
+        </div>
+
+        {/* Header Action Buttons */}
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
-            onClick={() => router.push("/admin/blog")}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-all"
+            onClick={() => alert("AI Draft Assistant coming soon!")}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl text-xs font-bold text-purple-700 transition-all shadow-2xs"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
+            <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+            <span>AI Draft</span>
           </button>
-          <h1 className="font-display text-2xl font-bold text-gray-900">
-            {initialData?.id ? "Edit Blog Post" : "New Blog Post"}
-          </h1>
+
+          <button
+            type="button"
+            disabled={loading}
+            onClick={() => handleSubmit("DRAFT")}
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-bold text-slate-700 transition-all shadow-2xs"
+          >
+            {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5 text-slate-500" />}
+            <span>Save Draft</span>
+          </button>
+
+          <button
+            type="button"
+            disabled={loading}
+            onClick={() => handleSubmit("PUBLISHED")}
+            className="inline-flex items-center gap-1.5 px-5 py-2 bg-black hover:bg-slate-800 rounded-xl text-xs font-bold text-white transition-all shadow-sm"
+          >
+            {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5 text-emerald-400" />}
+            <span>Publish</span>
+          </button>
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:shadow-lg hover:shadow-blue-500/20 text-slate-900 font-semibold px-5 py-2.5 rounded-xl text-sm transition-all"
-        >
-          {loading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <Save className="w-4 h-4" />
-          )}
-          Save Post
-        </button>
       </div>
 
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 border border-red-100 rounded-2xl text-sm">
+        <div className="p-4 bg-red-50 text-red-600 border border-red-200 rounded-2xl text-xs font-semibold">
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <div className="bg-white rounded-3xl p-6 border border-gray-150 shadow-sm space-y-5">
-            <h2 className="font-display text-base font-bold text-gray-900 border-b border-gray-100 pb-3">
-              Article Content Details
-            </h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Article Title
-              </label>
-              <input
-                type="text"
-                required
-                value={title}
-                onChange={(e) => handleTitleChange(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                placeholder="e.g. Validation of HVAC Systems in Sterilization Facilities"
-              />
-            </div>
+      {/* Main Two-Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Form Content (8 cols) */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Title */}
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              ARTICLE TITLE *
+            </label>
+            <input
+              type="text"
+              required
+              value={title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              className="w-full bg-white border border-slate-200/80 rounded-2xl px-5 py-4 text-base font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all shadow-sm"
+              placeholder="e.g. How Much Does It Cost to Build a Cleanroom Facility in India?"
+            />
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Slug (URL Path)
-              </label>
+          {/* URL Slug */}
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              # URL SLUG
+            </label>
+            <div className="flex items-center bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
+              <span className="px-4 py-3 bg-slate-50 text-slate-400 font-mono text-xs border-r border-slate-200/80">
+                URL: /blog/
+              </span>
               <input
                 type="text"
                 required
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-gray-50 text-gray-500"
-                placeholder="validation-of-hvac-systems"
+                className="flex-1 px-4 py-3 text-xs font-mono text-slate-800 focus:outline-none bg-transparent"
+                placeholder="cleanroom-facility-cost-india"
               />
+              <button
+                type="button"
+                onClick={handleResetSlug}
+                className="px-4 py-3 text-xs font-semibold text-slate-500 hover:text-slate-900 border-l border-slate-200/80 hover:bg-slate-50 transition-colors"
+              >
+                Reset
+              </button>
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Excerpt
-              </label>
-              <textarea
-                required
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                rows={3}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
-                placeholder="Short summary displayed on blog listings..."
-              />
-            </div>
+          {/* Excerpt */}
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              EXCERPT / SHORT SUMMARY
+            </label>
+            <textarea
+              required
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+              rows={3}
+              className="w-full bg-white border border-slate-200/80 rounded-2xl p-4 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all shadow-sm"
+              placeholder="Discover how much it costs to build a cleanroom facility in India, including ISO standards, HVAC systems, and validation expenses..."
+            />
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Body Content (Rich Text)
-              </label>
+          {/* Insert Quick Snippets Bar */}
+          <div className="flex items-center gap-2 bg-slate-100/70 p-2 rounded-xl text-xs">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">
+              INSERT:
+            </span>
+            <button
+              type="button"
+              onClick={() => handleInsertSnippet('\n<a href="/contact" class="inline-btn">Discuss Your Cleanroom Project</a>\n')}
+              className="px-3 py-1 bg-white hover:bg-slate-200/80 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition-colors shadow-2xs"
+            >
+              CTA Button
+            </button>
+            <button
+              type="button"
+              onClick={() => handleInsertSnippet("\n---\n")}
+              className="px-3 py-1 bg-white hover:bg-slate-200/80 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition-colors shadow-2xs"
+            >
+              Divider
+            </button>
+            <button
+              type="button"
+              onClick={() => handleInsertSnippet('\n<iframe src="https://youtube.com/embed/..." class="w-full aspect-video rounded-xl"></iframe>\n')}
+              className="px-3 py-1 bg-white hover:bg-slate-200/80 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 transition-colors shadow-2xs"
+            >
+              Embed (YT / X)
+            </button>
+          </div>
+
+          {/* Body Content with Rich Formatting Bar */}
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              CONTENT *
+            </label>
+            <div className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
+              {/* Rich Text Toolbar */}
+              <div className="flex flex-wrap items-center gap-1 p-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <select className="bg-white border border-slate-200 rounded-md px-2 py-1 text-xs font-semibold text-slate-700">
+                  <option>Normal</option>
+                  <option>Heading 2</option>
+                  <option>Heading 3</option>
+                </select>
+                <div className="h-4 w-px bg-slate-200 mx-1" />
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600 font-bold" title="Bold">
+                  <Bold className="w-3.5 h-3.5" />
+                </button>
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Italic">
+                  <Italic className="w-3.5 h-3.5" />
+                </button>
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Underline">
+                  <Underline className="w-3.5 h-3.5" />
+                </button>
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Strikethrough">
+                  <Strikethrough className="w-3.5 h-3.5" />
+                </button>
+                <div className="h-4 w-px bg-slate-200 mx-1" />
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Quote">
+                  <Quote className="w-3.5 h-3.5" />
+                </button>
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Code">
+                  <Code className="w-3.5 h-3.5" />
+                </button>
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="List">
+                  <List className="w-3.5 h-3.5" />
+                </button>
+                <div className="h-4 w-px bg-slate-200 mx-1" />
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Link">
+                  <LinkIcon className="w-3.5 h-3.5" />
+                </button>
+                <button type="button" className="p-1.5 hover:bg-slate-200/70 rounded text-slate-600" title="Image">
+                  <ImageIcon className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
               <textarea
                 required
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                rows={12}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-mono"
-                placeholder="Write your article body content here..."
+                rows={16}
+                className="w-full p-5 text-sm font-sans text-slate-800 placeholder-slate-400 focus:outline-none"
+                placeholder="Start writing your engineering article here..."
               />
             </div>
-          </div>
-
-          {/* Dynamic FAQ list */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-150 shadow-sm space-y-5">
-            <div className="flex justify-between items-center border-b border-gray-100 pb-3">
-              <h2 className="font-display text-base font-bold text-gray-900">
-                Frequently Asked Questions
-              </h2>
-              <button
-                type="button"
-                onClick={() => setFaq([...faq, { question: "", answer: "" }])}
-                className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:underline"
-              >
-                <Plus className="w-3.5 h-3.5" /> Add FAQ
-              </button>
-            </div>
-            {faq.length === 0 ? (
-              <p className="text-sm text-gray-500 italic">No FAQs added yet.</p>
-            ) : (
-              <div className="space-y-4">
-                {faq.map((item, i) => (
-                  <div key={i} className="p-4 border border-gray-100 rounded-2xl space-y-3 relative bg-gray-50/50">
-                    <button
-                      type="button"
-                      onClick={() => setFaq(faq.filter((_, idx) => idx !== i))}
-                      className="absolute top-3 right-3 p-1.5 border border-gray-200 hover:border-red-500 hover:text-red-500 rounded-lg bg-white transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Question</label>
-                      <input
-                        type="text"
-                        value={item.question}
-                        onChange={(e) => {
-                          const newFaq = [...faq];
-                          newFaq[i].question = e.target.value;
-                          setFaq(newFaq);
-                        }}
-                        className="w-full border border-gray-200 rounded-xl px-3 py-1.5 text-sm bg-white"
-                        placeholder="e.g. How often is validation required?"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Answer</label>
-                      <textarea
-                        value={item.answer}
-                        onChange={(e) => {
-                          const newFaq = [...faq];
-                          newFaq[i].answer = e.target.value;
-                          setFaq(newFaq);
-                        }}
-                        rows={2}
-                        className="w-full border border-gray-200 rounded-xl px-3 py-1.5 text-sm bg-white"
-                        placeholder="Detailed answer content..."
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
-        <div className="space-y-6">
-          {/* Status & Media */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-150 shadow-sm space-y-5">
-            <h2 className="font-display text-base font-bold text-gray-900 border-b border-gray-100 pb-3">
-              Status & Media
-            </h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Publish Status
-              </label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm bg-white"
+        {/* Right Sidebar Panels (4 cols) */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Cover Image Card */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+              <ImageIcon className="w-4 h-4 text-slate-500" />
+              Cover Image
+            </h3>
+
+            {/* URL / Upload Tabs */}
+            <div className="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setImageTab("url")}
+                className={`flex-1 py-1.5 rounded-lg transition-all ${
+                  imageTab === "url" ? "bg-black text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                }`}
               >
-                <option value="PUBLISHED">Published</option>
-                <option value="DRAFT">Draft</option>
-              </select>
+                URL
+              </button>
+              <button
+                type="button"
+                onClick={() => setImageTab("upload")}
+                className={`flex-1 py-1.5 rounded-lg transition-all ${
+                  imageTab === "upload" ? "bg-black text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                Upload
+              </button>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Category
-              </label>
+            {imageTab === "url" ? (
               <input
                 type="text"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
-                placeholder="e.g. HVAC Engineering"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 font-mono"
+                placeholder="https://images.unsplash.com/..."
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Author
-              </label>
-              <input
-                type="text"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
-                placeholder="e.g. Dr. A. K. Sharma"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Reading Time
-              </label>
-              <input
-                type="text"
-                value={readTime}
-                onChange={(e) => setReadTime(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
-                placeholder="e.g. 5 min read"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Feature Image
-              </label>
-              {image && (
-                <div className="relative aspect-video rounded-xl overflow-hidden mb-3 border border-gray-200">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={image} alt="Preview" className="w-full h-full object-cover" />
-                </div>
-              )}
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs"
-                  placeholder="Image URL or upload below"
-                />
-              </div>
-              <label className="mt-2.5 flex items-center justify-center gap-2 border-2 border-dashed border-gray-200 hover:border-blue-600 hover:bg-blue-50/50 rounded-xl p-4 cursor-pointer transition-all">
-                <Upload className="w-4 h-4 text-gray-400" />
-                <span className="text-xs font-semibold text-gray-600">Upload Image File</span>
+            ) : (
+              <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-black rounded-xl p-6 cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition-all">
+                <Upload className="w-5 h-5 text-slate-400" />
+                <span className="text-xs font-bold text-slate-700">Choose Image File</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -380,52 +426,83 @@ export default function BlogForm({ initialData }: BlogFormProps) {
                   className="hidden"
                 />
               </label>
+            )}
+
+            {/* Image Preview Box */}
+            {image && (
+              <div className="relative rounded-xl overflow-hidden border border-slate-200 aspect-video group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image} alt="Cover Preview" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setImage("")}
+                  className="absolute top-2 right-2 p-1.5 bg-black/70 hover:bg-black text-white rounded-lg backdrop-blur-md transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
+            {/* Alt Text Input */}
+            <div>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                COVER IMAGE ALT TEXT (FOR SEO)
+              </label>
+              <input
+                type="text"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-medium text-slate-800"
+                placeholder="e.g. Modern HVAC Cleanroom Facility Construction"
+              />
             </div>
           </div>
 
-          {/* SEO fields */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-150 shadow-sm space-y-5">
-            <h2 className="font-display text-base font-bold text-gray-900 border-b border-gray-100 pb-3">
-              SEO Optimization
-            </h2>
+          {/* SEO Settings Panel */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+              <Globe className="w-4 h-4 text-blue-600" />
+              SEO Settings
+            </h3>
+
             <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-sm font-medium text-gray-700">
-                  Meta Title
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  META TITLE
                 </label>
-                <span className={`text-xs ${metaTitle.length > 60 ? "text-amber-600" : "text-gray-400"}`}>
-                  {metaTitle.length}/60
+                <span className="text-[11px] font-mono text-slate-400">
+                  {metaTitle.length}/60 characters
                 </span>
               </div>
               <input
                 type="text"
                 value={metaTitle}
                 onChange={(e) => setMetaTitle(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
-                placeholder="Ideal length: 50-60 chars"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-medium"
+                placeholder="e.g. Cleanroom Facility Construction Costs India"
               />
             </div>
 
             <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-sm font-medium text-gray-700">
-                  Meta Description
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  META DESCRIPTION
                 </label>
-                <span className={`text-xs ${metaDesc.length > 155 ? "text-amber-600" : "text-gray-400"}`}>
-                  {metaDesc.length}/155
+                <span className="text-[11px] font-mono text-slate-400">
+                  SEO Description (160 chars max)
                 </span>
               </div>
               <textarea
                 value={metaDesc}
                 onChange={(e) => setMetaDesc(e.target.value)}
-                rows={3}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"
-                placeholder="Ideal length: 120-155 chars"
+                rows={4}
+                className="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs text-slate-800 font-medium"
+                placeholder="SEO Description (160 chars max)..."
               />
             </div>
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 }
