@@ -5,8 +5,9 @@ import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import { generateOrganizationSchema } from "@/lib/seo";
 import { companyInfo } from "@/lib/data";
-
 import AnalyticsScripts from "@/components/AnalyticsScripts";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: {
@@ -59,6 +60,8 @@ export default function RootLayout({
           <main id="main-content">{children}</main>
           <Footer />
         </SmoothScroll>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
