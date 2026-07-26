@@ -214,7 +214,27 @@ export default function AboutPage() {
                   <p className="text-blue-600 text-xs font-extrabold uppercase tracking-[0.08em] mt-1 mb-3">
                     {member.role}
                   </p>
-                  <p className="text-slate-600 text-sm leading-relaxed">{member.bio}</p>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-4">{member.bio}</p>
+                  <div className="flex items-center gap-3 pt-2 border-t border-slate-100">
+                    {member.linkedin && member.linkedin !== "#" && (
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-blue-600 transition-colors bg-slate-100 px-3 py-1.5 rounded-lg"
+                      >
+                        LinkedIn
+                      </a>
+                    )}
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-blue-600 transition-colors bg-slate-100 px-3 py-1.5 rounded-lg"
+                      >
+                        {member.email}
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
