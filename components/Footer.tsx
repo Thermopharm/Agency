@@ -143,12 +143,15 @@ export default function Footer() {
           <p className="text-slate-600 text-[11px] font-medium">
             © {new Date().getFullYear()} {companyInfo.name}. All Rights Reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center gap-6">
             <Link href="/privacy" className="text-slate-600 hover:text-blue-600 text-[11px] font-medium transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/contact" className="text-slate-600 hover:text-blue-600 text-[11px] font-medium transition-colors">
-              Technical Consultation
+            <Link href="/terms" className="text-slate-600 hover:text-blue-600 text-[11px] font-medium transition-colors">
+              Terms of Service
+            </Link>
+            <Link href="/compliance" className="text-slate-600 hover:text-blue-600 text-[11px] font-medium transition-colors">
+              Quality & Compliance Policy
             </Link>
           </div>
         </div>
