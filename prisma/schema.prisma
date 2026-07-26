@@ -60,25 +60,41 @@ model Industry {
 }
 
 model Project {
-  id          String   @id @default(uuid())
-  slug        String   @unique
-  title       String
-  location    String
-  year        String
-  client      String
-  category    String
-  image       String
-  description String
-  challenge   String
-  solution    String
-  results     String   // Stored as JSON string (results list)
-  tags        String   // Stored as JSON string (tags list)
-  faq         String   // Stored as JSON string (Q&As list)
-  metaTitle   String?
-  metaDesc    String?
-  status      String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  slug                String   @unique
+  title               String
+  location            String
+  year                String
+  client              String
+  category            String
+  image               String
+  imageAlt            String?  // Alt text for primary feature image
+  gallery             String?  // Stored as JSON array of images/objects
+  videoUrl            String?  // YouTube/Vimeo walkthrough link
+  description         String
+  challenge           String
+  solution            String
+  results             String   // Stored as JSON string (results list)
+  tags                String   // Stored as JSON string (tags list)
+  faq                 String   // Stored as JSON string (Q&As list)
+  facilitySize        String?  // e.g. "45,000 sq. ft."
+  industrySector      String?  // e.g. "Oral Solid Dosage (OSD)", "Biotech"
+  complianceStandards String?  // Stored as JSON string
+  technologiesUsed    String?  // Stored as JSON string
+  testimonialQuote    String?  // Client feedback quote
+  testimonialAuthor   String?  // Client name & title
+  relatedServices     String?  // Stored as JSON string array
+  metaTitle           String?
+  metaDesc            String?
+  keywords            String?
+  ogImage             String?  // Open Graph preview image
+  canonicalUrl        String?  // Custom Canonical URL override
+  robotsMeta          String?  @default("index, follow")
+  publisher           String?  @default("Thermopharm Engineering")
+  author              String?  @default("Thermopharm HVAC Engineering Team")
+  status              String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model BlogPost {

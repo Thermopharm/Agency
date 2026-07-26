@@ -13,7 +13,7 @@ export async function GET(
   }
 
   try {
-    const project = await db.project.findUnique({
+    const project = await (db as any).project.findUnique({
       where: { id: params.id },
     });
 
@@ -22,9 +22,9 @@ export async function GET(
     }
 
     return NextResponse.json(project);
-  } catch (error) {
+  } catch (error: any) {
     console.error("GET project by ID error:", error);
-    return NextResponse.json({ error: "Failed to fetch project" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to fetch project" }, { status: 500 });
   }
 }
 
@@ -48,14 +48,30 @@ export async function PUT(
       client,
       category,
       image,
+      imageAlt,
+      gallery,
+      videoUrl,
       description,
       challenge,
       solution,
       results,
       tags,
       faq,
+      facilitySize,
+      industrySector,
+      complianceStandards,
+      technologiesUsed,
+      testimonialQuote,
+      testimonialAuthor,
+      relatedServices,
       metaTitle,
       metaDesc,
+      keywords,
+      ogImage,
+      canonicalUrl,
+      robotsMeta,
+      publisher,
+      author,
       status,
     } = body;
 
@@ -65,7 +81,7 @@ export async function PUT(
     }
 
     // Slug check (excluding current project)
-    const existing = await db.project.findFirst({
+    const existing = await (db as any).project.findFirst({
       where: {
         slug,
         id: { not: params.id },
@@ -75,32 +91,48 @@ export async function PUT(
       return NextResponse.json({ error: "Slug already exists. Choose a unique title." }, { status: 400 });
     }
 
-    const project = await db.project.update({
+    const project = await (db as any).project.update({
       where: { id: params.id },
       data: {
         title,
         slug,
-        location,
-        year,
-        client,
-        category,
-        image,
+        location: location || "India",
+        year: year || new Date().getFullYear().toString(),
+        client: client || "Confidential Client",
+        category: category || "General",
+        image: image || "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+        imageAlt: imageAlt || "",
+        gallery: typeof gallery === "string" ? gallery : JSON.stringify(gallery || []),
+        videoUrl: videoUrl || "",
         description,
         challenge,
         solution,
-        results: JSON.stringify(results),
-        tags: JSON.stringify(tags),
-        faq: JSON.stringify(faq),
-        metaTitle,
-        metaDesc,
-        status,
+        results: typeof results === "string" ? results : JSON.stringify(results || []),
+        tags: typeof tags === "string" ? tags : JSON.stringify(tags || []),
+        faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
+        facilitySize: facilitySize || "",
+        industrySector: industrySector || "",
+        complianceStandards: typeof complianceStandards === "string" ? complianceStandards : JSON.stringify(complianceStandards || []),
+        technologiesUsed: typeof technologiesUsed === "string" ? technologiesUsed : JSON.stringify(technologiesUsed || []),
+        testimonialQuote: testimonialQuote || "",
+        testimonialAuthor: testimonialAuthor || "",
+        relatedServices: typeof relatedServices === "string" ? relatedServices : JSON.stringify(relatedServices || []),
+        metaTitle: metaTitle || "",
+        metaDesc: metaDesc || "",
+        keywords: keywords || "",
+        ogImage: ogImage || "",
+        canonicalUrl: canonicalUrl || "",
+        robotsMeta: robotsMeta || "index, follow",
+        publisher: publisher || "Thermopharm Engineering",
+        author: author || "Thermopharm HVAC Engineering Team",
+        status: status || "PUBLISHED",
       },
     });
 
     return NextResponse.json(project);
-  } catch (error) {
+  } catch (error: any) {
     console.error("PUT project error:", error);
-    return NextResponse.json({ error: "Failed to update project" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update project" }, { status: 500 });
   }
 }
 
@@ -115,12 +147,12 @@ export async function DELETE(
   }
 
   try {
-    await db.project.delete({
+    await (db as any).project.delete({
       where: { id: params.id },
     });
     return NextResponse.json({ success: true, message: "Project deleted successfully" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("DELETE project error:", error);
-    return NextResponse.json({ error: "Failed to delete project" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to delete project" }, { status: 500 });
   }
 }
