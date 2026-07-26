@@ -19,7 +19,6 @@ export interface IndustryType {
   status?: string;
 }
 
-
 export interface ServiceType {
   id: string;
   slug: string;
@@ -64,17 +63,39 @@ export interface BlogPostType {
   excerpt: string;
   content: string;
   image: string;
+  imageAlt?: string | null;
   category: string;
   author: string;
+  authorCredentials?: string | null;
+  technicalReviewer?: string | null;
   date: string;
+  lastUpdated?: string | null;
   readTime: string;
-  faq?: FAQItem[];
+  faq?: FAQItem[] | string;
+  keyTakeaways?: string[] | string | null;
+  techSpecs?: any;
+  schemaType?: string | null;
+  focusKeyword?: string | null;
+  secondaryKeywords?: string | null;
+  ogImage?: string | null;
+  twitterCard?: string | null;
+  canonicalUrl?: string | null;
+  robotsMeta?: string | null;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+  ctaStyle?: string | null;
+  disclaimerText?: string | null;
+  sources?: string[] | string | null;
+  industryTags?: string[] | string | null;
+  standardsMentioned?: string[] | string | null;
   metaTitle?: string | null;
   metaDesc?: string | null;
   status?: string;
 }
 
-function safeParse<T>(jsonStr: string, fallback: T): T {
+function safeParse<T>(jsonStr: string | null | undefined, fallback: T): T {
+  if (!jsonStr) return fallback;
+  if (typeof jsonStr !== "string") return jsonStr as T;
   try {
     return JSON.parse(jsonStr) as T;
   } catch (e) {
@@ -97,7 +118,6 @@ export async function getAllServices(): Promise<ServiceType[]> {
       faq: safeParse<FAQItem[]>(s.faq, []),
     }));
 
-    // Merge static and DB, letting DB overwrite static slugs
     const merged: ServiceType[] = [...parsedDb];
     for (const stat of staticServices) {
       if (!merged.some((m) => m.slug === stat.slug)) {
@@ -182,6 +202,10 @@ export async function getAllBlogPosts(): Promise<BlogPostType[]> {
     const parsedDb: BlogPostType[] = dbPosts.map((p) => ({
       ...p,
       faq: safeParse<FAQItem[]>(p.faq, []),
+      keyTakeaways: safeParse<string[]>(p.keyTakeaways, []),
+      techSpecs: safeParse<any[]>(p.techSpecs, []),
+      sources: safeParse<string[]>(p.sources, []),
+      industryTags: safeParse<string[]>(p.industryTags, []),
     }));
 
     const merged: BlogPostType[] = [...parsedDb];
@@ -203,6 +227,10 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostType | nu
       return {
         ...dbPost,
         faq: safeParse<FAQItem[]>(dbPost.faq, []),
+        keyTakeaways: safeParse<string[]>(dbPost.keyTakeaways, []),
+        techSpecs: safeParse<any[]>(dbPost.techSpecs, []),
+        sources: safeParse<string[]>(dbPost.sources, []),
+        industryTags: safeParse<string[]>(dbPost.industryTags, []),
       } as BlogPostType;
     }
   } catch (e) {}
@@ -252,4 +280,3 @@ export async function getIndustryBySlug(slug: string): Promise<IndustryType | nu
   const stat = staticIndustries.find((i) => i.slug === slug);
   return stat ? { ...stat, status: "PUBLISHED" } : null;
 }
-
