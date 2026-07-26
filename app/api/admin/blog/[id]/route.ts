@@ -48,11 +48,40 @@ export async function PUT(
       excerpt,
       content,
       image,
+      imageAlt,
       category,
       author,
+      authorCredentials,
+      technicalReviewer,
       date,
+      lastUpdated,
       readTime,
       faq,
+      keyTakeaways,
+      techSpecs,
+      tableData,
+      calloutBoxes,
+      videoUrl,
+      videoTranscript,
+      downloadableResources,
+      gallery,
+      schemaType,
+      focusKeyword,
+      secondaryKeywords,
+      ogImage,
+      twitterCard,
+      canonicalUrl,
+      robotsMeta,
+      relatedServices,
+      relatedProjects,
+      relatedArticles,
+      ctaText,
+      ctaLink,
+      ctaStyle,
+      disclaimerText,
+      sources,
+      industryTags,
+      standardsMentioned,
       metaTitle,
       metaDesc,
       status,
@@ -63,19 +92,51 @@ export async function PUT(
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const stringifyIfNeeded = (val: any) =>
+      typeof val === "string" ? val : JSON.stringify(val || []);
+
     const payload = {
       title,
       slug,
       excerpt,
       content,
-      image: image || "/images/projects/project-3.png",
-      category: category || "Cleanroom",
+      image: image || "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=800&q=80",
+      imageAlt: imageAlt || title,
+      category: category || "HVAC Engineering",
       author: author || "Ashish Jha",
+      authorCredentials: authorCredentials || "Senior HVAC Cleanroom Engineer, 15+ years exp",
+      technicalReviewer: technicalReviewer || "Thermopharm Technical Quality Board",
       date: date || new Date().toISOString().split("T")[0],
+      lastUpdated: lastUpdated || new Date().toISOString().split("T")[0],
       readTime: readTime || "5 min read",
-      faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
-      metaTitle: metaTitle || "",
-      metaDesc: metaDesc || "",
+      faq: stringifyIfNeeded(faq),
+      keyTakeaways: stringifyIfNeeded(keyTakeaways),
+      techSpecs: stringifyIfNeeded(techSpecs),
+      tableData: stringifyIfNeeded(tableData),
+      calloutBoxes: stringifyIfNeeded(calloutBoxes),
+      videoUrl: videoUrl || "",
+      videoTranscript: videoTranscript || "",
+      downloadableResources: stringifyIfNeeded(downloadableResources),
+      gallery: stringifyIfNeeded(gallery),
+      schemaType: schemaType || "BlogPosting",
+      focusKeyword: focusKeyword || "",
+      secondaryKeywords: secondaryKeywords || "",
+      ogImage: ogImage || image || "",
+      twitterCard: twitterCard || "summary_large_image",
+      canonicalUrl: canonicalUrl || "",
+      robotsMeta: robotsMeta || "index, follow",
+      relatedServices: stringifyIfNeeded(relatedServices),
+      relatedProjects: stringifyIfNeeded(relatedProjects),
+      relatedArticles: stringifyIfNeeded(relatedArticles),
+      ctaText: ctaText || "Request a Custom Cleanroom Engineering Consultation",
+      ctaLink: ctaLink || "/contact",
+      ctaStyle: ctaStyle || "button",
+      disclaimerText: disclaimerText || "This article provides general engineering guidance in compliance with ISO 14644 & GMP standards.",
+      sources: stringifyIfNeeded(sources),
+      industryTags: stringifyIfNeeded(industryTags),
+      standardsMentioned: stringifyIfNeeded(standardsMentioned),
+      metaTitle: metaTitle || title,
+      metaDesc: metaDesc || excerpt,
       status: status || "PUBLISHED",
     };
 
@@ -98,9 +159,9 @@ export async function PUT(
     }
 
     return NextResponse.json(post);
-  } catch (error) {
+  } catch (error: any) {
     console.error("PUT blog post error:", error);
-    return NextResponse.json({ error: "Failed to update blog post" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update blog post" }, { status: 500 });
   }
 }
 

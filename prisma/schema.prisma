@@ -98,22 +98,51 @@ model Project {
 }
 
 model BlogPost {
-  id        String   @id @default(uuid())
-  slug      String   @unique
-  title     String
-  excerpt   String
-  content   String
-  image     String
-  category  String
-  author    String
-  date      String
-  readTime  String
-  faq       String   // Stored as JSON string (Q&As list)
-  metaTitle String?
-  metaDesc  String?
-  status    String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                    String   @id @default(uuid())
+  slug                  String   @unique
+  title                 String
+  excerpt               String
+  content               String
+  image                 String
+  imageAlt              String?
+  category              String
+  author                String
+  authorCredentials     String?  // e.g. "Senior HVAC Engineer, 15+ years"
+  technicalReviewer     String?  // e.g. "Ashish Jha, Director of Engineering"
+  date                  String
+  lastUpdated           String?  // Date of last update
+  readTime              String
+  faq                   String   // Stored as JSON string (Q&As list)
+  keyTakeaways          String?  // JSON string array of takeaways
+  techSpecs             String?  // JSON string array of specs
+  tableData             String?  // JSON string of structured table data
+  calloutBoxes          String?  // JSON string array of callout boxes
+  videoUrl              String?  // YouTube/Vimeo URL
+  videoTranscript       String?  // Transcript for Video SEO
+  downloadableResources String?  // JSON array of PDF datasheets / whitepapers
+  gallery               String?  // JSON array of gallery images with alt & captions
+  schemaType            String?  @default("BlogPosting") // "BlogPosting" | "Article" | "TechArticle" | "HowTo"
+  focusKeyword          String?  // Primary target keyword
+  secondaryKeywords     String?  // Comma-separated secondary keywords
+  ogImage               String?  // Open Graph 1200x630 social share image
+  twitterCard           String?  @default("summary_large_image")
+  canonicalUrl          String?  // Custom Canonical URL override
+  robotsMeta            String?  @default("index, follow")
+  relatedServices       String?  // JSON array of service slugs
+  relatedProjects       String?  // JSON array of project slugs
+  relatedArticles       String?  // JSON array of related article slugs
+  ctaText               String?
+  ctaLink               String?
+  ctaStyle              String?  @default("button") // "button" | "banner" | "inline"
+  disclaimerText        String?  // Regulatory & engineering disclaimer
+  sources               String?  // JSON array of references / ISO docs
+  industryTags          String?  // JSON array of industry tags (Pharma, Biotech, etc.)
+  standardsMentioned    String?  // JSON array of standards (ISO 14644, GMP, etc.)
+  metaTitle             String?
+  metaDesc              String?
+  status                String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }
 
 model Testimonial {
