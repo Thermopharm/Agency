@@ -142,31 +142,36 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.push("/admin/projects")}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-all"
+            className="p-2 hover:bg-slate-100 rounded-xl transition-all border border-slate-200 bg-white"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
+            <ArrowLeft className="w-4 h-4 text-slate-700" />
           </button>
-          <h1 className="font-display text-2xl font-bold text-gray-900">
-            {initialData?.id ? "Edit Project" : "New Project"}
-          </h1>
+          <div>
+            <h1 className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">
+              {initialData?.id ? "Edit Case Study Project" : "New Case Study Project"}
+            </h1>
+            <p className="text-slate-400 text-xs font-medium mt-0.5">
+              Manage project details, metrics, and media assets
+            </p>
+          </div>
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:shadow-lg hover:shadow-blue-500/20 text-slate-900 font-semibold px-5 py-2.5 rounded-xl text-sm transition-all"
+          className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl text-xs tracking-wider transition-all shadow-sm"
         >
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
             <Save className="w-4 h-4" />
           )}
-          Save Project
+          <span>Save Project</span>
         </button>
       </div>
 

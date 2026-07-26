@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, Award, Sparkles, CheckCircle } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import { services, clientLogos } from "@/lib/data";
 import { generateSeoMetadata } from "@/lib/seo";
 import { NumberTicker } from "@/components/ui/NumberTicker";
@@ -331,31 +332,7 @@ export default function HomePage() {
             </h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {testimonials.map((t, i) => (
-              <ScrollReveal key={i} direction="up" delay={i * 0.1}>
-                <div className="bg-slate-50 border border-slate-200/80 p-8 h-full flex flex-col justify-between rounded-2xl shadow-sm hover:bg-white hover:shadow-md transition-all">
-                  <div>
-                    <div className="flex gap-1 text-amber-500 text-xs mb-4">
-                      ★★★★★
-                    </div>
-                    <p className="text-slate-700 text-sm leading-relaxed italic mb-6">
-                      &ldquo;{t.content}&rdquo;
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 pt-4 border-t border-slate-200/70">
-                    <div className="w-10 h-10 bg-blue-600 text-white font-bold text-sm flex items-center justify-center rounded-xl">
-                      {t.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-slate-900">{t.name}</p>
-                      <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">{t.role} · {t.company}</p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
+          <TestimonialsCarousel />
         </div>
       </section>
 
