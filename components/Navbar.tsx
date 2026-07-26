@@ -101,7 +101,7 @@ export default function Navbar() {
             <div className="hidden lg:block">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-blue-600 text-slate-900 px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-blue-500 transition-colors rounded"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-blue-700 transition-all shadow-md hover:shadow-lg rounded-xl"
               >
                 Enquire Now
               </Link>
@@ -174,7 +174,7 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full bg-blue-600 text-slate-900 py-3.5 text-xs font-bold uppercase tracking-[0.08em] hover:bg-blue-500 transition-colors rounded"
+                className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-3.5 text-xs font-bold uppercase tracking-[0.08em] hover:bg-blue-700 transition-all shadow-md rounded-xl"
               >
                 Enquire Now
               </Link>

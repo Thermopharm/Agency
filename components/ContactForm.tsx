@@ -216,7 +216,7 @@ export default function ContactForm({ darkMode = false }: ContactFormProps) {
         id="contact-submit"
         type="submit"
         disabled={submitting}
-        className="w-full flex items-center justify-center gap-2 bg-blue-600 text-slate-900 py-3.5 text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-blue-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed rounded"
+        className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3.5 text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-blue-700 transition-all shadow-md rounded-xl disabled:opacity-70 disabled:cursor-not-allowed"
       >
         {submitting ? (
           <>
