@@ -115,3 +115,16 @@ model Lead {
   status    String   @default("NEW") // "NEW" | "READ" | "CONTACTED" | "ARCHIVED"
   createdAt DateTime @default(now())
 }
+
+model SiteSettings {
+  id                        String   @id @default("default")
+  gaId                      String?  // Google Analytics GA4 ID (e.g. G-XXXXXXXXXX)
+  gtmId                     String?  // Google Tag Manager ID (e.g. GTM-XXXXXXX)
+  searchConsoleVerification String?  // Google Search Console verification HTML code or token
+  clarityId                 String?  // Microsoft Clarity / Analytics ID
+  customHeadScripts         String?  // Custom script tags injected inside <head>
+  customBodyScripts         String?  // Custom script tags injected inside <body>
+  seoDefaultTitle           String?  // Global SEO Default Title
+  seoDefaultDesc            String?  // Global SEO Default Description
+  updatedAt                 DateTime @updatedAt
+}

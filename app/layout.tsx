@@ -6,6 +6,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 import { generateOrganizationSchema } from "@/lib/seo";
 import { companyInfo } from "@/lib/data";
 
+import AnalyticsScripts from "@/components/AnalyticsScripts";
+
 export const metadata: Metadata = {
   title: {
     default: "Thermopharm Pvt. Ltd. | HVAC & Cleanroom Engineering India",
@@ -44,6 +46,8 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* @ts-ignore */}
+        <AnalyticsScripts />
       </head>
       <body className="antialiased text-[#0a0a0a] bg-white">
         <script

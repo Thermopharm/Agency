@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BarChart2,
+  BarChart3,
   Inbox,
   Briefcase,
   FileText,
@@ -38,6 +39,7 @@ export default function AdminRootLayout({
     { label: "Industries", href: "/admin/industries", icon: Factory },
     { label: "Services", href: "/admin/services", icon: Layers },
     { label: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
+    { label: "Analytics & Tracking", href: "/admin/analytics", icon: BarChart3 },
     { label: "SEO Files", href: "/admin/seo", icon: Globe },
   ];
 
