@@ -1,15 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, Award, Sparkles, CheckCircle } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ShieldCheck,
+  Zap,
+  Award,
+  Sparkles,
+  CheckCircle2,
+  Factory,
+  Building2,
+  Package,
+  BookOpen,
+  Calendar,
+  User,
+} from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
-import { services, clientLogos } from "@/lib/data";
+import { products, clientLogos } from "@/lib/data";
+import {
+  getAllServices,
+  getAllProjects,
+  getAllIndustries,
+  getAllBlogPosts,
+} from "@/lib/content";
 import { generateSeoMetadata } from "@/lib/seo";
 import { NumberTicker } from "@/components/ui/NumberTicker";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { BorderBeamCard } from "@/components/ui/BorderBeamCard";
 import { ScrollReveal, ScrollStagger, ScrollStaggerItem } from "@/components/ui/ScrollReveal";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = generateSeoMetadata({
   title: "Advanced HVAC & Cleanroom Engineering Solutions | Thermopharm",
@@ -24,35 +46,11 @@ export const metadata: Metadata = generateSeoMetadata({
   ],
 });
 
-const testimonials = [
-  {
-    name: "Dr. Vikram Patel",
-    role: "Operations Director",
-    company: "Pharma Manufacturer",
-    content: "Thermopharm's engineering team delivered our facility on time and within budget. Their HVAC systems have maintained perfect conditions through two monsoon seasons.",
-  },
-  {
-    name: "Sneha Kulkarni",
-    role: "Quality Manager",
-    company: "Biotech Facility",
-    content: "The team managed the complete validation lifecycle, and we passed our WHO-GMP audit on the first attempt. Exceptional attention to regulatory detail.",
-  },
-];
-
 const aboutImages = [
   { src: "/images/hero.jpg", alt: "HVAC systems installation" },
   { src: "/images/projects/project-2.png", alt: "Industrial HVAC rooftop" },
   { src: "/images/projects/project-3.png", alt: "Cleanroom facility" },
   { src: "/images/about-5.png", alt: "Engineering team at work" },
-];
-
-const equipmentCards = [
-  { title: "HVAC Systems", image: "/images/projects/project-2.png", year: "Jul 2024", location: "Mumbai, India", scope: "Design & Installation" },
-  { title: "Cleanroom Design", image: "/images/projects/project-3.png", year: "Mar 2024", location: "Aurangabad, India", scope: "Turnkey Execution" },
-  { title: "BIM Modelling", image: "/images/projects/project-4.png", year: "Jan 2024", location: "Hyderabad, India", scope: "MEP Coordination" },
-  { title: "BMS & Controls", image: "/images/bms.jpg", year: "Nov 2023", location: "Pan-India", scope: "Automation & Controls" },
-  { title: "Pharmaceutical Engineering", image: "/images/projects/project-5.png", year: "Aug 2023", location: "Vadodara, India", scope: "Facility Design" },
-  { title: "Chemical Plant", image: "/images/chiller.jpg", year: "Jun 2023", location: "Faridabad, India", scope: "Process Engineering" },
 ];
 
 const tickerItems = [
@@ -64,19 +62,29 @@ const tickerItems = [
   "LOD 400 BIM MEP COORDINATION",
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [services, projects, industries, blogPosts] = await Promise.all([
+    getAllServices(),
+    getAllProjects(),
+    getAllIndustries(),
+    getAllBlogPosts(),
+  ]);
+
+  const topIndustries = industries.slice(0, 3);
+  const topProjects = projects.slice(0, 3);
+  const topProducts = products.slice(0, 3);
+  const topBlogs = blogPosts.slice(0, 3);
+
   return (
     <div className="bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white min-h-screen">
       {/* ── HERO SECTION ───────────────────────────────────── */}
       <section className="relative min-h-screen flex items-center overflow-hidden pt-36 pb-24 bg-gradient-to-b from-white via-slate-50 to-slate-100/60">
-        {/* Subtle grid pattern background */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-60" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Headline & CTAs */}
             <div className="lg:col-span-8">
-              {/* Status Badge */}
               <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-blue-50 border border-blue-100 text-blue-600 text-[11px] font-extrabold uppercase tracking-[0.18em] mb-6 rounded-full shadow-sm">
                 <Sparkles className="w-4 h-4 text-blue-600 animate-pulse" />
                 WHO-GMP & ISO 14644 Compliant Engineering
@@ -92,7 +100,6 @@ export default function HomePage() {
                 Engineering heavy-duty HVAC, cleanrooms, and automated facility controls for India&apos;s leading pharmaceutical, healthcare, and semiconductor manufacturers.
               </p>
 
-              {/* CTAs */}
               <div className="flex flex-wrap gap-4">
                 <Link
                   id="hero-cta-quote"
@@ -112,7 +119,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: Number Ticker Stats */}
+            {/* Right: Ticker Stats */}
             <div className="lg:col-span-4 flex justify-start lg:justify-end">
               <div className="grid grid-cols-2 gap-8 border-t lg:border-t-0 lg:border-l border-slate-200/80 pt-8 lg:pt-0 lg:pl-10 w-full">
                 <div className="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/80 shadow-sm">
@@ -156,7 +163,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── HIGH-CONTRAST MARQUEE TEXT BAND ─────────────────── */}
+      {/* ── MARQUEE TEXT BAND ─────────────────── */}
       <section className="bg-white py-5 overflow-hidden border-y border-slate-200/80 relative shadow-sm">
         <div className="animate-marquee flex whitespace-nowrap gap-0 items-center">
           {[...tickerItems, ...tickerItems, ...tickerItems].map((item, i) => (
@@ -170,7 +177,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── ABOUT SECTION WITH SCROLL REVEAL ─────────────────────────────── */}
+      {/* ── ABOUT SECTION ─────────────────────────────── */}
       <section className="py-28 bg-slate-50 text-slate-900 overflow-hidden border-b border-slate-200/80">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <ScrollReveal direction="up">
@@ -188,7 +195,6 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          {/* 4 Image Grid with Glassmorphic Hover */}
           <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
             {aboutImages.map((img, i) => (
               <ScrollStaggerItem key={i}>
@@ -224,8 +230,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── EQUIPMENT & CAPABILITIES ─────────────────── */}
-      <section className="py-28 bg-white text-slate-900" id="services">
+      {/* ── 1. SERVICES CAPABILITIES ─────────────────── */}
+      <section className="py-28 bg-white text-slate-900 border-b border-slate-200/80" id="services">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
           <ScrollReveal direction="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
             <div>
@@ -234,51 +240,50 @@ export default function HomePage() {
               </span>
               <h2 className="font-display text-[clamp(28px,4vw,48px)] font-bold text-slate-900 leading-[1.1] tracking-tight">
                 High-performance industrial <br />
-                equipment & systems.
+                engineering services.
               </h2>
             </div>
             <Link
               href="/services"
               id="view-all-services"
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-blue-600 hover:gap-3 transition-all flex-shrink-0"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-blue-50 border border-blue-100 hover:bg-blue-600 hover:text-white text-blue-600 text-xs font-bold uppercase tracking-[0.08em] rounded-xl transition-all shadow-sm flex-shrink-0"
             >
-              Explore All Services <ArrowRight className="w-4 h-4" />
+              <span>Explore All Services</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </ScrollReveal>
 
-          {/* 6-Card Grid with Glassmorphic Cards */}
           <ScrollStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {equipmentCards.map((card, i) => (
-              <ScrollStaggerItem key={i}>
+            {services.slice(0, 6).map((svc, i) => (
+              <ScrollStaggerItem key={svc.id}>
                 <TiltCard>
                   <BorderBeamCard className="h-full">
                     <Link
-                      href={`/services/${services[i]?.slug || "#"}`}
-                      id={`equipment-card-${i}`}
+                      href={`/services/${svc.slug}`}
+                      id={`service-card-${i}`}
                       className="group block p-6 h-full flex flex-col justify-between bg-slate-50/70 hover:bg-white rounded-2xl border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow-lg transition-all duration-300"
                     >
                       <div>
                         <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 mb-6 border border-slate-200/80 rounded-xl">
                           <Image
-                            src={card.image}
-                            alt={card.title}
+                            src={svc.image}
+                            alt={svc.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                             sizes="(max-width: 768px) 100vw, 33vw"
                           />
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] text-slate-500 uppercase tracking-[0.1em] mb-2 font-mono font-bold">
-                          <span>{card.location}</span>
-                          <span>{card.year}</span>
-                        </div>
+                        <span className="text-[11px] text-blue-600 font-mono font-bold uppercase tracking-widest block mb-2">
+                          0{i + 1} / SERVICE
+                        </span>
 
-                        <h3 className="font-display text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                          {card.title}
+                        <h3 className="font-display text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                          {svc.title}
                         </h3>
 
-                        <p className="text-slate-500 text-xs font-semibold uppercase tracking-[0.06em]">
-                          Scope: {card.scope}
+                        <p className="text-slate-600 text-xs leading-relaxed line-clamp-3">
+                          {svc.shortDesc}
                         </p>
                       </div>
 
@@ -296,8 +301,256 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── 2. INDUSTRIES SERVED (NEW PREVIEW) ─────────────────── */}
+      <section className="py-28 bg-slate-50 text-slate-900 border-b border-slate-200/80">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <ScrollReveal direction="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-3 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                <Factory className="w-3.5 h-3.5 text-blue-600" /> Sectors We Engineering
+              </span>
+              <h2 className="font-display text-[clamp(28px,4vw,48px)] font-bold text-slate-900 leading-[1.1] tracking-tight">
+                Specialized compliance <br />
+                for critical industries.
+              </h2>
+            </div>
+            <Link
+              href="/industries"
+              id="view-all-industries"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.08em] rounded-xl transition-all shadow-md flex-shrink-0"
+            >
+              <span>View All 5 Industry Sectors</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </ScrollReveal>
+
+          <ScrollStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {topIndustries.map((ind) => (
+              <ScrollStaggerItem key={ind.id}>
+                <BorderBeamCard className="h-full">
+                  <div className="bg-white border border-slate-200/80 rounded-2xl p-8 h-full flex flex-col justify-between hover:border-slate-300 shadow-sm hover:shadow-xl transition-all duration-300 group">
+                    <div>
+                      <div className="relative w-full h-48 rounded-xl overflow-hidden mb-6 bg-slate-100 border border-slate-200/80">
+                        <Image
+                          src={ind.image || "/images/projects/project-1.png"}
+                          alt={ind.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-blue-600 block mb-2">
+                        {ind.slug.replace("-", " ")}
+                      </span>
+
+                      <h3 className="text-2xl font-bold font-display text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                        {ind.title}
+                      </h3>
+
+                      <p className="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                        {ind.shortDesc}
+                      </p>
+
+                      {ind.specs.length > 0 && (
+                        <div className="space-y-2 pt-4 border-t border-slate-100">
+                          {ind.specs.slice(0, 3).map((spec, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-xs text-slate-700 font-medium">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                              <span>{spec}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="pt-6">
+                      <Link
+                        href={`/industries/${ind.slug}`}
+                        className="inline-flex items-center justify-between w-full py-3.5 px-5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-sm transition-all"
+                      >
+                        <span>Explore Sector Details</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </BorderBeamCard>
+              </ScrollStaggerItem>
+            ))}
+          </ScrollStagger>
+        </div>
+      </section>
+
+      {/* ── 3. FEATURED PROJECTS (NEW PREVIEW) ─────────────────── */}
+      <section className="py-28 bg-white text-slate-900 border-b border-slate-200/80">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <ScrollReveal direction="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-3 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                <Building2 className="w-3.5 h-3.5 text-blue-600" /> Landmark Infrastructure
+              </span>
+              <h2 className="font-display text-[clamp(28px,4vw,48px)] font-bold text-slate-900 leading-[1.1] tracking-tight">
+                Featured engineering <br />
+                case studies.
+              </h2>
+            </div>
+            <Link
+              href="/projects"
+              id="view-all-projects"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.08em] rounded-xl transition-all shadow-md flex-shrink-0"
+            >
+              <span>View All 14 Case Studies</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </ScrollReveal>
+
+          <ScrollStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {topProjects.map((p) => (
+              <ScrollStaggerItem key={p.id}>
+                <BorderBeamCard className="h-full">
+                  <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:bg-white transition-all duration-300 flex flex-col justify-between h-full group">
+                    <div>
+                      <div className="relative h-56 w-full bg-slate-100 overflow-hidden">
+                        <Image
+                          src={p.image || "/images/projects/project-1.png"}
+                          alt={p.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 border border-slate-200">
+                          {p.category}
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono font-bold uppercase tracking-wider mb-2">
+                          <span>{p.client}</span>
+                          <span>{p.location}</span>
+                        </div>
+
+                        <h3 className="font-display text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-3">
+                          {p.title}
+                        </h3>
+
+                        <p className="text-slate-600 text-xs leading-relaxed line-clamp-3 mb-4 font-normal">
+                          {p.description}
+                        </p>
+
+                        {p.results && p.results.length > 0 && (
+                          <div className="bg-blue-50/80 border border-blue-100 rounded-xl p-3">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700 block mb-1">
+                              Key Result:
+                            </span>
+                            <p className="text-xs text-slate-700 font-medium truncate">
+                              ✓ {p.results[0]}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="p-6 pt-0">
+                      <Link
+                        href={`/projects/${p.slug}`}
+                        className="w-full inline-flex items-center justify-center gap-2 py-3 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm"
+                      >
+                        <span>View Project Audit Details</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </BorderBeamCard>
+              </ScrollStaggerItem>
+            ))}
+          </ScrollStagger>
+        </div>
+      </section>
+
+      {/* ── 4. PRODUCTS CATALOG (NEW PREVIEW) ─────────────────── */}
+      <section className="py-28 bg-slate-50 text-slate-900 border-b border-slate-200/80">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <ScrollReveal direction="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-3 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                <Package className="w-3.5 h-3.5 text-blue-600" /> Modular Components & Hardware
+              </span>
+              <h2 className="font-display text-[clamp(28px,4vw,48px)] font-bold text-slate-900 leading-[1.1] tracking-tight">
+                Precision cleanroom & <br />
+                HVAC products.
+              </h2>
+            </div>
+            <Link
+              href="/products"
+              id="view-all-products"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.08em] rounded-xl transition-all shadow-md flex-shrink-0"
+            >
+              <span>Explore Full Product Catalog</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </ScrollReveal>
+
+          <ScrollStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {topProducts.map((prod) => (
+              <ScrollStaggerItem key={prod.id}>
+                <BorderBeamCard className="h-full">
+                  <div className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group">
+                    <div>
+                      <div className="relative h-56 w-full bg-slate-100 overflow-hidden">
+                        <Image
+                          src={prod.image}
+                          alt={prod.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 border border-slate-200">
+                          {prod.category}
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-slate-400 block mb-1">
+                          {prod.manufacturer} Engineering
+                        </span>
+
+                        <h3 className="font-display text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-3">
+                          {prod.title}
+                        </h3>
+
+                        <p className="text-slate-600 text-xs leading-relaxed line-clamp-3 mb-4 font-normal">
+                          {prod.description}
+                        </p>
+
+                        {prod.specs && prod.specs.length > 0 && (
+                          <div className="space-y-1.5 pt-3 border-t border-slate-100">
+                            {prod.specs.slice(0, 2).map((spec, i) => (
+                              <div key={i} className="flex items-center gap-2 text-xs text-slate-600 font-medium">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                                <span className="truncate">{spec}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="p-6 pt-0">
+                      <Link
+                        href="/products"
+                        className="w-full inline-flex items-center justify-center gap-2 py-3 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm"
+                      >
+                        <span>Request Datasheet</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </BorderBeamCard>
+              </ScrollStaggerItem>
+            ))}
+          </ScrollStagger>
+        </div>
+      </section>
+
       {/* ── CLIENT LOGO MARQUEE ────────────────────────────────────────── */}
-      <section className="py-20 bg-slate-50 text-slate-900 border-y border-slate-200/80">
+      <section className="py-20 bg-white text-slate-900 border-b border-slate-200/80">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 mb-10 text-center">
           <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 block">
             Trusted by Top Pharmaceutical & Industrial Organizations
@@ -317,6 +570,85 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── 5. TECHNICAL JOURNAL / BLOG (NEW PREVIEW) ─────────────────── */}
+      <section className="py-28 bg-slate-50 text-slate-900 border-b border-slate-200/80">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+          <ScrollReveal direction="up" className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600 mb-3 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                <BookOpen className="w-3.5 h-3.5 text-blue-600" /> Technical Insights & Standards
+              </span>
+              <h2 className="font-display text-[clamp(28px,4vw,48px)] font-bold text-slate-900 leading-[1.1] tracking-tight">
+                Latest articles from our <br />
+                lead engineers.
+              </h2>
+            </div>
+            <Link
+              href="/blog"
+              id="view-all-blog"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-[0.08em] rounded-xl transition-all shadow-md flex-shrink-0"
+            >
+              <span>Explore Technical Journal</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </ScrollReveal>
+
+          <ScrollStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {topBlogs.map((b) => (
+              <ScrollStaggerItem key={b.id}>
+                <BorderBeamCard className="h-full">
+                  <div className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group">
+                    <div>
+                      <div className="relative h-52 w-full bg-slate-100 overflow-hidden">
+                        <Image
+                          src={b.image || "/images/projects/project-3.png"}
+                          alt={b.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600 border border-slate-200">
+                          {b.category}
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <div className="flex items-center gap-4 text-[11px] text-slate-500 font-mono mb-3">
+                          <span className="flex items-center gap-1">
+                            <User className="w-3 h-3 text-blue-600" /> {b.author}
+                          </span>
+                          <span>·</span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3 text-blue-600" /> {b.date}
+                          </span>
+                        </div>
+
+                        <h3 className="font-display text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-3 line-clamp-2">
+                          {b.title}
+                        </h3>
+
+                        <p className="text-slate-600 text-xs leading-relaxed line-clamp-3 font-normal">
+                          {b.excerpt}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-6 pt-0">
+                      <Link
+                        href={`/blog/${b.slug}`}
+                        className="w-full inline-flex items-center justify-center gap-2 py-3 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm"
+                      >
+                        <span>Read Technical Article</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </BorderBeamCard>
+              </ScrollStaggerItem>
+            ))}
+          </ScrollStagger>
         </div>
       </section>
 
