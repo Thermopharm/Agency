@@ -13,7 +13,7 @@ export async function GET(
   }
 
   try {
-    const service = await db.service.findUnique({
+    const service = await (db as any).service.findUnique({
       where: { id: params.id },
     });
 
@@ -22,9 +22,9 @@ export async function GET(
     }
 
     return NextResponse.json(service);
-  } catch (error) {
+  } catch (error: any) {
     console.error("GET service by ID error:", error);
-    return NextResponse.json({ error: "Failed to fetch service" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to fetch service" }, { status: 500 });
   }
 }
 
@@ -71,7 +71,7 @@ export async function PUT(
     }
 
     // Verify slug uniqueness (excluding current service)
-    const existing = await db.service.findFirst({
+    const existing = await (db as any).service.findFirst({
       where: {
         slug,
         id: { not: params.id },
@@ -81,7 +81,7 @@ export async function PUT(
       return NextResponse.json({ error: "Slug already exists. Choose a unique title." }, { status: 400 });
     }
 
-    const service = await db.service.update({
+    const service = await (db as any).service.update({
       where: { id: params.id },
       data: {
         title,
@@ -110,9 +110,9 @@ export async function PUT(
     });
 
     return NextResponse.json(service);
-  } catch (error) {
+  } catch (error: any) {
     console.error("PUT service error:", error);
-    return NextResponse.json({ error: "Failed to update service" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update service" }, { status: 500 });
   }
 }
 
@@ -127,12 +127,12 @@ export async function DELETE(
   }
 
   try {
-    await db.service.delete({
+    await (db as any).service.delete({
       where: { id: params.id },
     });
     return NextResponse.json({ success: true, message: "Service deleted successfully" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("DELETE service error:", error);
-    return NextResponse.json({ error: "Failed to delete service" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to delete service" }, { status: 500 });
   }
 }

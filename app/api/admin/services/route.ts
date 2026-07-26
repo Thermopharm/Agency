@@ -10,13 +10,13 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const services = await db.service.findMany({
+    const services = await (db as any).service.findMany({
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(services);
-  } catch (error) {
+  } catch (error: any) {
     console.error("GET services error:", error);
-    return NextResponse.json({ error: "Failed to fetch services" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to fetch services" }, { status: 500 });
   }
 }
 
@@ -60,12 +60,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify slug uniqueness
-    const existing = await db.service.findUnique({ where: { slug } });
+    const existing = await (db as any).service.findUnique({ where: { slug } });
     if (existing) {
       return NextResponse.json({ error: "Slug already exists. Choose a unique title." }, { status: 400 });
     }
 
-    const service = await db.service.create({
+    const service = await (db as any).service.create({
       data: {
         title,
         slug,
@@ -93,8 +93,8 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(service, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("POST service error:", error);
-    return NextResponse.json({ error: "Failed to create service" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to create service" }, { status: 500 });
   }
 }
