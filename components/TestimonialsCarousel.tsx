@@ -9,6 +9,7 @@ interface Testimonial {
   role: string;
   company?: string;
   content: string;
+  avatar?: string;
   rating?: number;
 }
 
@@ -111,9 +112,16 @@ export default function TestimonialsCarousel() {
               </div>
 
               <div className="flex items-center gap-3 pt-4 border-t border-slate-200/70">
-                <div className="w-10 h-10 bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center rounded-xl shadow-sm">
-                  {t.name.charAt(0)}
-                </div>
+                {t.avatar ? (
+                  <div className="w-10 h-10 rounded-xl overflow-hidden border border-slate-200 flex-shrink-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={t.avatar} alt={t.name} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="w-10 h-10 bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center rounded-xl shadow-sm flex-shrink-0">
+                    {t.name.charAt(0)}
+                  </div>
+                )}
                 <div>
                   <p className="text-xs font-bold text-slate-900">{t.name}</p>
                   <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">
