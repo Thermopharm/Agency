@@ -1,10 +1,24 @@
 import { db } from "./db";
-import { services as staticServices, projects as staticProjects, blogPosts as staticBlogPosts } from "./data";
+import { services as staticServices, projects as staticProjects, blogPosts as staticBlogPosts, industries as staticIndustries } from "./data";
 
 export interface FAQItem {
   question: string;
   answer: string;
 }
+
+export interface IndustryType {
+  id: string;
+  slug: string;
+  title: string;
+  shortDesc: string;
+  fullDesc: string;
+  icon: string;
+  image: string;
+  specs: string[];
+  standards: string[];
+  status?: string;
+}
+
 
 export interface ServiceType {
   id: string;
@@ -196,3 +210,46 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostType | nu
   const stat = staticBlogPosts.find((b) => b.slug === slug);
   return stat ? { ...stat, status: "PUBLISHED" } : null;
 }
+
+// INDUSTRIES
+export async function getAllIndustries(): Promise<IndustryType[]> {
+  try {
+    const dbIndustries = await db.industry.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const parsedDb: IndustryType[] = dbIndustries.map((ind) => ({
+      ...ind,
+      specs: safeParse<string[]>(ind.specs, []),
+      standards: safeParse<string[]>(ind.standards, []),
+    }));
+
+    const merged: IndustryType[] = [...parsedDb];
+    for (const stat of staticIndustries) {
+      if (!merged.some((m) => m.slug === stat.slug)) {
+        merged.push({ ...stat, status: "PUBLISHED" });
+      }
+    }
+    return merged;
+  } catch (e) {
+    return staticIndustries.map((i) => ({ ...i, status: "PUBLISHED" }));
+  }
+}
+
+export async function getIndustryBySlug(slug: string): Promise<IndustryType | null> {
+  try {
+    const dbInd = await db.industry.findUnique({ where: { slug } });
+    if (dbInd) {
+      return {
+        ...dbInd,
+        specs: safeParse<string[]>(dbInd.specs, []),
+        standards: safeParse<string[]>(dbInd.standards, []),
+      } as IndustryType;
+    }
+  } catch (e) {}
+
+  const stat = staticIndustries.find((i) => i.slug === slug);
+  return stat ? { ...stat, status: "PUBLISHED" } : null;
+}
+

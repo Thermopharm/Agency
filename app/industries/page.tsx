@@ -1,8 +1,10 @@
-import { prisma } from "@/lib/db";
 import Link from "next/link";
 import Image from "next/image";
 import { Factory, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { BorderBeamCard } from "@/components/ui/BorderBeamCard";
+import { getAllIndustries } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Industries Served | Thermopharm Pvt. Ltd.",
@@ -11,15 +13,8 @@ export const metadata = {
 };
 
 export default async function IndustriesPage() {
-  let dbIndustries: any[] = [];
-  try {
-    dbIndustries = await prisma.industry.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { createdAt: "asc" },
-    });
-  } catch (e) {
-    console.error("Failed to fetch industries:", e);
-  }
+  const dbIndustries = await getAllIndustries();
+
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white">

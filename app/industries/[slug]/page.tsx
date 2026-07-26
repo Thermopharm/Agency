@@ -1,42 +1,26 @@
-import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, Shield, ArrowLeft } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import { getIndustryBySlug } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 export default async function DynamicIndustryPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  let industry = null;
-  try {
-    industry = await prisma.industry.findUnique({
-      where: { slug: params.slug },
-    });
-  } catch (e) {
-    console.error(e);
-  }
+  const industry = await getIndustryBySlug(params.slug);
 
   if (!industry) {
     notFound();
   }
 
-  let specs: string[] = [];
-  let standards: string[] = [];
+  const specs: string[] = industry.specs || [];
+  const standards: string[] = industry.standards || [];
 
-  try {
-    specs = typeof industry.specs === "string" ? JSON.parse(industry.specs) : industry.specs;
-  } catch {
-    specs = [];
-  }
-
-  try {
-    standards = typeof industry.standards === "string" ? JSON.parse(industry.standards) : industry.standards;
-  } catch {
-    standards = [];
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white">
