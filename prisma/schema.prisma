@@ -22,12 +22,21 @@ model Service {
   fullDesc         String
   icon             String
   image            String
+  gallery          String?  // Stored as JSON string array of image URLs
+  brochureUrl      String?  // PDF Brochure / Datasheet link
   specs            String   // Stored as JSON string (specs list)
   standards        String   // Stored as JSON string (standards list)
   faq              String   // Stored as JSON string (Q&As list)
+  industriesServed String?  // Stored as JSON string array or comma-separated
+  serviceLocations String?  // e.g. "Mumbai, Maharashtra & Pan-India"
+  relatedServices  String?  // Stored as JSON string array
   metaTitle        String?
   metaDesc         String?
   keywords         String?  // Comma-separated or JSON
+  canonicalUrl     String?  // Custom Canonical URL
+  robotsMeta       String?  @default("index, follow") // "index, follow" | "noindex, nofollow"
+  publisher        String?  @default("Thermopharm Engineering")
+  author           String?  @default("Thermopharm HVAC Engineering Team")
   status           String   @default("PUBLISHED") // "DRAFT" | "PUBLISHED"
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
