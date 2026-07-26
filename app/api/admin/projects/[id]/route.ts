@@ -13,8 +13,10 @@ export async function GET(
   }
 
   try {
-    const project = await (db as any).project.findUnique({
-      where: { id: params.id },
+    const project = await (db as any).project.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
     });
 
     if (!project) {
@@ -80,54 +82,58 @@ export async function PUT(
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Slug check (excluding current project)
+    const payload = {
+      title,
+      slug,
+      location: location || "India",
+      year: year || new Date().getFullYear().toString(),
+      client: client || "Confidential Client",
+      category: category || "General",
+      image: image || "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+      imageAlt: imageAlt || "",
+      gallery: typeof gallery === "string" ? gallery : JSON.stringify(gallery || []),
+      videoUrl: videoUrl || "",
+      description,
+      challenge,
+      solution,
+      results: typeof results === "string" ? results : JSON.stringify(results || []),
+      tags: typeof tags === "string" ? tags : JSON.stringify(tags || []),
+      faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
+      facilitySize: facilitySize || "",
+      industrySector: industrySector || "",
+      complianceStandards: typeof complianceStandards === "string" ? complianceStandards : JSON.stringify(complianceStandards || []),
+      technologiesUsed: typeof technologiesUsed === "string" ? technologiesUsed : JSON.stringify(technologiesUsed || []),
+      testimonialQuote: testimonialQuote || "",
+      testimonialAuthor: testimonialAuthor || "",
+      relatedServices: typeof relatedServices === "string" ? relatedServices : JSON.stringify(relatedServices || []),
+      metaTitle: metaTitle || "",
+      metaDesc: metaDesc || "",
+      keywords: keywords || "",
+      ogImage: ogImage || "",
+      canonicalUrl: canonicalUrl || "",
+      robotsMeta: robotsMeta || "index, follow",
+      publisher: publisher || "Thermopharm Engineering",
+      author: author || "Thermopharm HVAC Engineering Team",
+      status: status || "PUBLISHED",
+    };
+
     const existing = await (db as any).project.findFirst({
       where: {
-        slug,
-        id: { not: params.id },
+        OR: [{ id: params.id }, { slug: params.id }, { slug }],
       },
     });
-    if (existing) {
-      return NextResponse.json({ error: "Slug already exists. Choose a unique title." }, { status: 400 });
-    }
 
-    const project = await (db as any).project.update({
-      where: { id: params.id },
-      data: {
-        title,
-        slug,
-        location: location || "India",
-        year: year || new Date().getFullYear().toString(),
-        client: client || "Confidential Client",
-        category: category || "General",
-        image: image || "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
-        imageAlt: imageAlt || "",
-        gallery: typeof gallery === "string" ? gallery : JSON.stringify(gallery || []),
-        videoUrl: videoUrl || "",
-        description,
-        challenge,
-        solution,
-        results: typeof results === "string" ? results : JSON.stringify(results || []),
-        tags: typeof tags === "string" ? tags : JSON.stringify(tags || []),
-        faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
-        facilitySize: facilitySize || "",
-        industrySector: industrySector || "",
-        complianceStandards: typeof complianceStandards === "string" ? complianceStandards : JSON.stringify(complianceStandards || []),
-        technologiesUsed: typeof technologiesUsed === "string" ? technologiesUsed : JSON.stringify(technologiesUsed || []),
-        testimonialQuote: testimonialQuote || "",
-        testimonialAuthor: testimonialAuthor || "",
-        relatedServices: typeof relatedServices === "string" ? relatedServices : JSON.stringify(relatedServices || []),
-        metaTitle: metaTitle || "",
-        metaDesc: metaDesc || "",
-        keywords: keywords || "",
-        ogImage: ogImage || "",
-        canonicalUrl: canonicalUrl || "",
-        robotsMeta: robotsMeta || "index, follow",
-        publisher: publisher || "Thermopharm Engineering",
-        author: author || "Thermopharm HVAC Engineering Team",
-        status: status || "PUBLISHED",
-      },
-    });
+    let project;
+    if (existing) {
+      project = await (db as any).project.update({
+        where: { id: existing.id },
+        data: payload,
+      });
+    } else {
+      project = await (db as any).project.create({
+        data: payload,
+      });
+    }
 
     return NextResponse.json(project);
   } catch (error: any) {
@@ -147,9 +153,17 @@ export async function DELETE(
   }
 
   try {
-    await (db as any).project.delete({
-      where: { id: params.id },
+    const existing = await (db as any).project.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
     });
+
+    if (existing) {
+      await (db as any).project.delete({
+        where: { id: existing.id },
+      });
+    }
     return NextResponse.json({ success: true, message: "Project deleted successfully" });
   } catch (error: any) {
     console.error("DELETE project error:", error);

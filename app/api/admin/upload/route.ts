@@ -54,21 +54,30 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Ensure uploads directory exists
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
+    // Try writing to local filesystem (works on local development)
+    try {
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      await mkdir(uploadsDir, { recursive: true });
 
-    // Generate unique name
-    const filename = `${crypto.randomUUID()}${ext}`;
-    const filepath = path.join(uploadsDir, filename);
+      const filename = `${crypto.randomUUID()}${ext}`;
+      const filepath = path.join(uploadsDir, filename);
 
-    // Save file
-    await writeFile(filepath, buffer);
+      await writeFile(filepath, buffer);
 
-    // Return public URL path
-    return NextResponse.json({
-      url: `/uploads/${filename}`,
-    });
+      return NextResponse.json({
+        url: `/uploads/${filename}`,
+      });
+    } catch (fsError) {
+      // Fallback for Vercel/Serverless read-only filesystem environment (/var/task/public)
+      console.warn("Read-only filesystem detected on Vercel. Converting upload to Data URL.");
+      const mimeType = file.type || `image/${ext.replace(".", "")}`;
+      const base64 = buffer.toString("base64");
+      const dataUrl = `data:${mimeType};base64,${base64}`;
+
+      return NextResponse.json({
+        url: dataUrl,
+      });
+    }
   } catch (error: any) {
     console.error("Upload API error:", error);
     return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500 });

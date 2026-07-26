@@ -13,8 +13,10 @@ export async function GET(
   }
 
   try {
-    const service = await (db as any).service.findUnique({
-      where: { id: params.id },
+    const service = await (db as any).service.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
     });
 
     if (!service) {
@@ -70,46 +72,51 @@ export async function PUT(
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Verify slug uniqueness (excluding current service)
+    const payload = {
+      title,
+      slug,
+      shortDesc,
+      fullDesc,
+      icon: icon || "Layers",
+      image: image || "/images/projects/project-1.png",
+      gallery: typeof gallery === "string" ? gallery : JSON.stringify(gallery || []),
+      brochureUrl: brochureUrl || "",
+      specs: typeof specs === "string" ? specs : JSON.stringify(specs || []),
+      standards: typeof standards === "string" ? standards : JSON.stringify(standards || []),
+      faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
+      industriesServed: typeof industriesServed === "string" ? industriesServed : JSON.stringify(industriesServed || []),
+      serviceLocations: serviceLocations || "",
+      relatedServices: typeof relatedServices === "string" ? relatedServices : JSON.stringify(relatedServices || []),
+      metaTitle: metaTitle || "",
+      metaDesc: metaDesc || "",
+      keywords: keywords || "",
+      canonicalUrl: canonicalUrl || "",
+      robotsMeta: robotsMeta || "index, follow",
+      publisher: publisher || "Thermopharm Engineering",
+      author: author || "Thermopharm HVAC Engineering Team",
+      status: status || "PUBLISHED",
+    };
+
+    // Find existing service by ID or slug
     const existing = await (db as any).service.findFirst({
       where: {
-        slug,
-        id: { not: params.id },
+        OR: [{ id: params.id }, { slug: params.id }, { slug }],
       },
     });
+
+    let resultService;
     if (existing) {
-      return NextResponse.json({ error: "Slug already exists. Choose a unique title." }, { status: 400 });
+      resultService = await (db as any).service.update({
+        where: { id: existing.id },
+        data: payload,
+      });
+    } else {
+      resultService = await (db as any).service.create({
+        data: payload,
+      });
     }
 
-    const service = await (db as any).service.update({
-      where: { id: params.id },
-      data: {
-        title,
-        slug,
-        shortDesc,
-        fullDesc,
-        icon,
-        image,
-        gallery: typeof gallery === "string" ? gallery : JSON.stringify(gallery || []),
-        brochureUrl: brochureUrl || "",
-        specs: typeof specs === "string" ? specs : JSON.stringify(specs || []),
-        standards: typeof standards === "string" ? standards : JSON.stringify(standards || []),
-        faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
-        industriesServed: typeof industriesServed === "string" ? industriesServed : JSON.stringify(industriesServed || []),
-        serviceLocations: serviceLocations || "",
-        relatedServices: typeof relatedServices === "string" ? relatedServices : JSON.stringify(relatedServices || []),
-        metaTitle: metaTitle || "",
-        metaDesc: metaDesc || "",
-        keywords: keywords || "",
-        canonicalUrl: canonicalUrl || "",
-        robotsMeta: robotsMeta || "index, follow",
-        publisher: publisher || "Thermopharm Engineering",
-        author: author || "Thermopharm HVAC Engineering Team",
-        status: status || "PUBLISHED",
-      },
-    });
-
-    return NextResponse.json(service);
+    return NextResponse.json(resultService);
   } catch (error: any) {
     console.error("PUT service error:", error);
     return NextResponse.json({ error: error.message || "Failed to update service" }, { status: 500 });
@@ -127,9 +134,17 @@ export async function DELETE(
   }
 
   try {
-    await (db as any).service.delete({
-      where: { id: params.id },
+    const existing = await (db as any).service.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
     });
+
+    if (existing) {
+      await (db as any).service.delete({
+        where: { id: existing.id },
+      });
+    }
     return NextResponse.json({ success: true, message: "Service deleted successfully" });
   } catch (error: any) {
     console.error("DELETE service error:", error);

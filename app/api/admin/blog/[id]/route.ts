@@ -13,8 +13,10 @@ export async function GET(
   }
 
   try {
-    const post = await db.blogPost.findUnique({
-      where: { id: params.id },
+    const post = await db.blogPost.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
     });
 
     if (!post) {
@@ -61,35 +63,39 @@ export async function PUT(
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Slug check (excluding current blog post)
+    const payload = {
+      title,
+      slug,
+      excerpt,
+      content,
+      image: image || "/images/projects/project-3.png",
+      category: category || "Cleanroom",
+      author: author || "Ashish Jha",
+      date: date || new Date().toISOString().split("T")[0],
+      readTime: readTime || "5 min read",
+      faq: typeof faq === "string" ? faq : JSON.stringify(faq || []),
+      metaTitle: metaTitle || "",
+      metaDesc: metaDesc || "",
+      status: status || "PUBLISHED",
+    };
+
     const existing = await db.blogPost.findFirst({
       where: {
-        slug,
-        id: { not: params.id },
+        OR: [{ id: params.id }, { slug: params.id }, { slug }],
       },
     });
-    if (existing) {
-      return NextResponse.json({ error: "Slug already exists. Choose a unique title." }, { status: 400 });
-    }
 
-    const post = await db.blogPost.update({
-      where: { id: params.id },
-      data: {
-        title,
-        slug,
-        excerpt,
-        content,
-        image,
-        category,
-        author,
-        date,
-        readTime,
-        faq: JSON.stringify(faq),
-        metaTitle,
-        metaDesc,
-        status,
-      },
-    });
+    let post;
+    if (existing) {
+      post = await db.blogPost.update({
+        where: { id: existing.id },
+        data: payload,
+      });
+    } else {
+      post = await db.blogPost.create({
+        data: payload,
+      });
+    }
 
     return NextResponse.json(post);
   } catch (error) {
@@ -109,9 +115,17 @@ export async function DELETE(
   }
 
   try {
-    await db.blogPost.delete({
-      where: { id: params.id },
+    const existing = await db.blogPost.findFirst({
+      where: {
+        OR: [{ id: params.id }, { slug: params.id }],
+      },
     });
+
+    if (existing) {
+      await db.blogPost.delete({
+        where: { id: existing.id },
+      });
+    }
     return NextResponse.json({ success: true, message: "Blog post deleted successfully" });
   } catch (error) {
     console.error("DELETE blog post error:", error);
