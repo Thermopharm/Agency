@@ -1,19 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Plus, Edit2, Trash2 } from "lucide-react";
-import { db } from "@/lib/db";
+import { getAllBlogPosts } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminBlogPage() {
-  let posts: any[] = [];
-  try {
-    posts = await db.blogPost.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-  } catch (e) {
-    console.error("Failed to load blog posts from DB:", e);
-  }
+  const posts = await getAllBlogPosts();
 
   return (
     <div className="space-y-6">
@@ -46,7 +39,7 @@ export default async function AdminBlogPage() {
         <div className="space-y-3">
           {posts.map((post) => (
             <div
-              key={post.id}
+              key={post.id || post.slug}
               className="bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-4 shadow-sm hover:border-slate-300 transition-all group"
             >
               <div className="flex items-center gap-4 min-w-0">
@@ -88,7 +81,7 @@ export default async function AdminBlogPage() {
               {/* Actions */}
               <div className="flex items-center gap-2 flex-shrink-0">
                 <Link
-                  href={`/admin/blog/${post.id}`}
+                  href={`/admin/blog/${post.slug || post.id}`}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs transition-all"
                 >
                   <Edit2 className="w-3.5 h-3.5 text-slate-500" />

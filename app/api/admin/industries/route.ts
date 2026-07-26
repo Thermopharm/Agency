@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAdminSession } from "@/lib/session";
+import { getAllIndustries } from "@/lib/content";
 
 export async function GET() {
   try {
-    const industries = await prisma.industry.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const industries = await getAllIndustries();
     return NextResponse.json(industries);
   } catch (error) {
     console.error("Error fetching industries:", error);

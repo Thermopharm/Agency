@@ -1,19 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Plus, Edit2, Trash2 } from "lucide-react";
-import { db } from "@/lib/db";
+import { getAllProjects } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminProjectsPage() {
-  let projects: any[] = [];
-  try {
-    projects = await db.project.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-  } catch (e) {
-    console.error("Failed to load projects from DB:", e);
-  }
+  const projects = await getAllProjects();
 
   return (
     <div className="space-y-6">
@@ -46,7 +39,7 @@ export default async function AdminProjectsPage() {
         <div className="space-y-3">
           {projects.map((proj) => (
             <div
-              key={proj.id}
+              key={proj.id || proj.slug}
               className="bg-white rounded-2xl border border-slate-200/80 p-4 flex items-center justify-between gap-4 shadow-sm hover:border-slate-300 transition-all group"
             >
               <div className="flex items-center gap-4 min-w-0">
@@ -88,7 +81,7 @@ export default async function AdminProjectsPage() {
               {/* Actions */}
               <div className="flex items-center gap-2 flex-shrink-0">
                 <Link
-                  href={`/admin/projects/${proj.id}`}
+                  href={`/admin/projects/${proj.slug || proj.id}`}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-lg text-xs font-semibold text-slate-700 shadow-2xs transition-all"
                 >
                   <Edit2 className="w-3.5 h-3.5 text-slate-500" />
