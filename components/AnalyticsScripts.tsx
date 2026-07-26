@@ -1,15 +1,36 @@
 import Script from "next/script";
-import { db } from "@/lib/db";
+import { dbRetry } from "@/lib/db";
+
+let cachedSettings: any = null;
+let lastFetchTime = 0;
+const CACHE_TTL = 60 * 1000; // 60 seconds memory cache to prevent DB connection storms
+
+async function getCachedSiteSettings() {
+  const now = Date.now();
+  if (cachedSettings && now - lastFetchTime < CACHE_TTL) {
+    return cachedSettings;
+  }
+  try {
+    const settings = await dbRetry(
+      (client) =>
+        (client as any).siteSettings.findUnique({
+          where: { id: "default" },
+        }),
+      2,
+      200
+    );
+    if (settings) {
+      cachedSettings = settings;
+      lastFetchTime = now;
+    }
+    return settings || cachedSettings || null;
+  } catch (error) {
+    return cachedSettings || null;
+  }
+}
 
 export default async function AnalyticsScripts() {
-  let settings = null;
-  try {
-    settings = await (db as any).siteSettings.findUnique({
-      where: { id: "default" },
-    });
-  } catch (error) {
-    // Graceful fallback if table is still provisioning
-  }
+  const settings = await getCachedSiteSettings();
 
   if (!settings) return null;
 

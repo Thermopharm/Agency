@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { db, dbRetry } from "./db";
 import { services as staticServices, projects as staticProjects, blogPosts as staticBlogPosts, industries as staticIndustries } from "./data";
 
 export interface FAQItem {
@@ -118,10 +118,12 @@ function safeParse<T>(jsonStr: string | null | undefined, fallback: T): T {
 // SERVICES
 export async function getAllServices(): Promise<ServiceType[]> {
   try {
-    const dbServices = await db.service.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { createdAt: "desc" },
-    });
+    const dbServices = await dbRetry((client) =>
+      client.service.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+      })
+    );
 
     const parsedDb: ServiceType[] = dbServices.map((s) => ({
       ...s,
@@ -144,7 +146,9 @@ export async function getAllServices(): Promise<ServiceType[]> {
 
 export async function getServiceBySlug(slug: string): Promise<ServiceType | null> {
   try {
-    const dbSvc = await db.service.findUnique({ where: { slug } });
+    const dbSvc = await dbRetry((client) =>
+      client.service.findUnique({ where: { slug } })
+    );
     if (dbSvc) {
       return {
         ...dbSvc,
@@ -162,10 +166,12 @@ export async function getServiceBySlug(slug: string): Promise<ServiceType | null
 // PROJECTS
 export async function getAllProjects(): Promise<ProjectType[]> {
   try {
-    const dbProjects = await db.project.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { createdAt: "desc" },
-    });
+    const dbProjects = await dbRetry((client) =>
+      client.project.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+      })
+    );
 
     const parsedDb: ProjectType[] = dbProjects.map((p) => ({
       ...p,
@@ -188,7 +194,9 @@ export async function getAllProjects(): Promise<ProjectType[]> {
 
 export async function getProjectBySlug(slug: string): Promise<ProjectType | null> {
   try {
-    const dbProj = await db.project.findUnique({ where: { slug } });
+    const dbProj = await dbRetry((client) =>
+      client.project.findUnique({ where: { slug } })
+    );
     if (dbProj) {
       return {
         ...dbProj,
@@ -206,10 +214,12 @@ export async function getProjectBySlug(slug: string): Promise<ProjectType | null
 // BLOG POSTS
 export async function getAllBlogPosts(): Promise<BlogPostType[]> {
   try {
-    const dbPosts = await db.blogPost.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { createdAt: "desc" },
-    });
+    const dbPosts = await dbRetry((client) =>
+      client.blogPost.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+      })
+    );
 
     const parsedDb: BlogPostType[] = dbPosts.map((p) => ({
       ...p,
@@ -234,7 +244,9 @@ export async function getAllBlogPosts(): Promise<BlogPostType[]> {
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPostType | null> {
   try {
-    const dbPost = await db.blogPost.findUnique({ where: { slug } });
+    const dbPost = await dbRetry((client) =>
+      client.blogPost.findUnique({ where: { slug } })
+    );
     if (dbPost) {
       return {
         ...dbPost,
@@ -254,10 +266,12 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostType | nu
 // INDUSTRIES
 export async function getAllIndustries(): Promise<IndustryType[]> {
   try {
-    const dbIndustries = await db.industry.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { createdAt: "asc" },
-    });
+    const dbIndustries = await dbRetry((client) =>
+      client.industry.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "asc" },
+      })
+    );
 
     const parsedDb: IndustryType[] = dbIndustries.map((ind) => ({
       ...ind,
@@ -285,7 +299,9 @@ export async function getAllIndustries(): Promise<IndustryType[]> {
 
 export async function getIndustryBySlug(slug: string): Promise<IndustryType | null> {
   try {
-    const dbInd = await db.industry.findUnique({ where: { slug } });
+    const dbInd = await dbRetry((client) =>
+      client.industry.findUnique({ where: { slug } })
+    );
     if (dbInd) {
       return {
         ...dbInd,

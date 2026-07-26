@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db, dbRetry } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ProjectForm from "../ProjectForm";
 import { getProjectBySlug } from "@/lib/content";
@@ -13,11 +13,13 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
   let project: any = null;
 
   try {
-    project = await db.project.findFirst({
-      where: {
-        OR: [{ id: params.id }, { slug: params.id }],
-      },
-    });
+    project = await dbRetry((client) =>
+      client.project.findFirst({
+        where: {
+          OR: [{ id: params.id }, { slug: params.id }],
+        },
+      })
+    );
   } catch (error) {
     console.error("Error fetching project from DB:", error);
   }
